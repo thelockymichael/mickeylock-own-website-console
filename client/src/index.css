@@ -34,7 +34,7 @@ html {
   change into a global variable
 */
 body {
-  background-color: #212224;
+  /* background-color: #212224; */
   /* background: url('images/sitebg.jpg') no-repeat center fixed; */
   background-size: cover;
   font-family: -apple-system, BlinkMacSystemFont, "Roboto", "Segoe UI", "Roboto",
