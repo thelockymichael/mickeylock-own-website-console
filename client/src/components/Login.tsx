@@ -39,8 +39,6 @@ const Login: React.FC<Props> = ({ history }) => {
     console.log("password", password);
     console.log("api url", config.WEBSITE_API);
 
-    //testi123
-
     login(username, password).then(
       () => {
         history.push("/dashboard");

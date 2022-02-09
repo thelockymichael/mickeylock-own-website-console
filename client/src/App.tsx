@@ -9,12 +9,11 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
 import Dashboard from "./components/Dashboard";
-import BoardUser from "./components/BoardUser";
-import BoardModerator from "./components/BoardModerator";
-import BoardAdmin from "./components/BoardAdmin";
 
 import EventBus from "./common/EventBus";
 import ICurrentUser from "./types/currentUser.type";
+import Projects from "./components/Projects";
+import About from "./components/About";
 
 const App: React.FC = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
@@ -50,7 +49,7 @@ const App: React.FC = () => {
     <div>
       <nav className="navbar navbar-expand navbar-dark bg-dark">
         <Link to={"/"} className="navbar-brand">
-          bezKoder
+          Mickeylock.com
         </Link>
         <div className="navbar-nav mr-auto">
           <li className="nav-item">
@@ -124,8 +123,12 @@ const App: React.FC = () => {
         <Switch>
           <Route exact path={["/", "/home"]} component={Home} />
           <Route exact path="/login" component={Login} />
+
           {/* <Route exact path="/register" component={Register} /> */}
           <Route exact path="/dashboard" component={Dashboard} />
+          <Route exact path="/dashboard/home" component={Home} />
+          <Route exact path="/dashboard/about" component={About} />
+          <Route exact path="/dashboard/projects" component={Projects} />
           {/* <Route path="/user" component={BoardUser} /> */}
           {/* <Route path="/mod" component={BoardModerator} /> */}
           {/* <Route path="/admin" component={BoardAdmin} />  */}

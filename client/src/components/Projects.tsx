@@ -1,9 +1,7 @@
 import React from "react";
 import { getCurrentUser } from "../services/auth.service";
 
-const Dashboard: React.FC = () => {
-  console.log("AM I IN DASBOARD? ?");
-
+const Projects: React.FC = () => {
   const currentUser = getCurrentUser();
 
   return (
@@ -45,18 +43,11 @@ const Dashboard: React.FC = () => {
           <p>
             <strong>Id:</strong> {currentUser?.user._id}
           </p>
-          <p>{/* <strong>Email:</strong> {currentUser?.user.email} */}</p>
           <strong>Authorities:</strong>
-          {/* <ul>
-        {currentUser.roles &&
-          currentUser.roles.map((role: string, index: number) => (
-            <li key={index}>{role}</li>
-          ))}
-      </ul> */}
         </div>
       </div>
     </div>
   );
 };
 
-export default Dashboard;
+export default Projects;
