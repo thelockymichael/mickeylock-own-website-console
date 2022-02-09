@@ -4,30 +4,32 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 import * as AuthService from "./services/auth.service";
-import IUser from "./types/user.type";
 
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
-import Profile from "./components/Profile";
+import Dashboard from "./components/Dashboard";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
 
 import EventBus from "./common/EventBus";
+import ICurrentUser from "./types/currentUser.type";
 
 const App: React.FC = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
   const [showAdminBoard, setShowAdminBoard] = useState<boolean>(false);
-  const [currentUser, setCurrentUser] = useState<IUser | undefined>(undefined);
+  const [currentUser, setCurrentUser] = useState<ICurrentUser | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     const user = AuthService.getCurrentUser();
 
     if (user) {
       setCurrentUser(user);
-      setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
-      setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
+      // setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
+      // setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
     }
 
     EventBus.on("logout", logOut);
@@ -85,8 +87,8 @@ const App: React.FC = () => {
         {currentUser ? (
           <div className="navbar-nav ml-auto">
             <li className="nav-item">
-              <Link to={"/profile"} className="nav-link">
-                {currentUser.username}
+              <Link to={"/dashboard"} className="nav-link">
+                {currentUser?.user.fullName}
               </Link>
             </li>
             <li className="nav-item">
@@ -112,15 +114,21 @@ const App: React.FC = () => {
         )}
       </nav>
 
+      {/*
+       TODO 
+        1. Login and get authToken
+      
+      */}
+
       <div className="container mt-3">
         <Switch>
           <Route exact path={["/", "/home"]} component={Home} />
           <Route exact path="/login" component={Login} />
-          {/* <Route exact path="/register" component={Register} />
-          <Route exact path="/profile" component={Profile} />
-          <Route path="/user" component={BoardUser} />
-          <Route path="/mod" component={BoardModerator} />
-          <Route path="/admin" component={BoardAdmin} /> */}
+          {/* <Route exact path="/register" component={Register} /> */}
+          <Route exact path="/dashboard" component={Dashboard} />
+          {/* <Route path="/user" component={BoardUser} /> */}
+          {/* <Route path="/mod" component={BoardModerator} /> */}
+          {/* <Route path="/admin" component={BoardAdmin} />  */}
         </Switch>
       </div>
     </div>

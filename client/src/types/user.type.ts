@@ -1,7 +1,10 @@
+import IProject from "./project.type";
+
 export default interface IUser {
-  id?: any | null,
-  username: string,
-  email: string,
-  password: string,
-  roles?: Array<string>
+  _id?: string;
+  fullName: string;
+  passwordHash: string;
+  about: string;
+  profileImage: string;
+  projects: Array<IProject>;
 }

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import config from "../config/config";
 
 import { login } from "../services/auth.service";
 import { RouteComponentProps } from "react-router-dom";
@@ -34,9 +35,15 @@ const Login: React.FC<Props> = ({ history }) => {
     setMessage("");
     setLoading(true);
 
+    console.log("username", username);
+    console.log("password", password);
+    console.log("api url", config.WEBSITE_API);
+
+    //testi123
+
     login(username, password).then(
       () => {
-        history.push("/profile");
+        history.push("/dashboard");
         window.location.reload();
       },
       (error) => {
@@ -88,7 +95,11 @@ const Login: React.FC<Props> = ({ history }) => {
             </div>
 
             <div className="form-group">
-              <button type="submit" className="btn btn-primary btn-block" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary btn-block"
+                disabled={loading}
+              >
                 {loading && (
                   <span className="spinner-border spinner-border-sm"></span>
                 )}
