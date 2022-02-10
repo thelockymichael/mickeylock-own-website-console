@@ -14,6 +14,7 @@ import Dashboard from "./components/Dashboard";
 
 import EventBus from "./common/EventBus";
 import ICurrentUser from "./types/currentUser.type";
+import NotFound from "./components/NotFound";
 
 const App: React.FC = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
@@ -128,6 +129,8 @@ const App: React.FC = () => {
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/dashboard/home" component={HomeEdit} />
           <Route exact path="/dashboard/about" component={AboutEdit} />
+          <Route component={NotFound} />
+
           {/* <Route exact path="/dashboard/projects" component={Projects} /> */}
           {/* <Route path="/user" component={BoardUser} /> */}
           {/* <Route path="/mod" component={BoardModerator} /> */}

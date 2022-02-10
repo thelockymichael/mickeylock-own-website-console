@@ -54,7 +54,7 @@ app.use((req, res, next) => {
   } else return next();
 });
 
-app.use(express.static(path.join(__dirname, "../client/build/")));
+app.use(express.static(path.resolve(__dirname, "../client/build/")));
 
 // TODO
 // START HERE
@@ -72,6 +72,11 @@ app.use("/api/user", userRouter);
 
 // Project router
 app.use("/api/project", projectRouter);
+
+// All other GET requests not handled will return to our React app
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
+});
 
 // Handle requests with unknown endpoint
 app.use(unknownEndpoint);

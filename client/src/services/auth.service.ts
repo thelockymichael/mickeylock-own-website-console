@@ -7,6 +7,9 @@ const API_URL = config.WEBSITE_API;
 const headers = {
   "Content-Type": "application/json",
   "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Credentials": true,
+  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
 };
 
 export const register = (username: string, password: string) => {

@@ -25,7 +25,7 @@ const Home: React.FC<{}> = () => {
 
     editHome(name, descText).then(
       () => {
-        window.location.reload();
+        // window.location.reload();
       },
       (error) => {
         const resMessage =
