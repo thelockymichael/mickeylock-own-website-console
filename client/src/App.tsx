@@ -6,13 +6,14 @@ import "./App.css";
 import * as AuthService from "./services/auth.service";
 
 import Login from "./components/Login";
-import Register from "./components/Register";
-import Home from "./components/Home";
+// import Register from "./components/Register";
+import HomeEdit from "./components/HomeEdit";
+import AboutEdit from "./components/AboutEdit";
+import HomePage from "./components/HomePage";
 import Dashboard from "./components/Dashboard";
 
 import EventBus from "./common/EventBus";
 import ICurrentUser from "./types/currentUser.type";
-import About from "./components/About";
 
 const App: React.FC = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
@@ -120,13 +121,13 @@ const App: React.FC = () => {
 
       <div className="container mt-3">
         <Switch>
-          <Route exact path={["/", "/home"]} component={Home} />
+          <Route exact path={["/", "/home"]} component={HomePage} />
           <Route exact path="/login" component={Login} />
 
           {/* <Route exact path="/register" component={Register} /> */}
           <Route exact path="/dashboard" component={Dashboard} />
-          <Route exact path="/dashboard/home" component={Home} />
-          <Route exact path="/dashboard/about" component={About} />
+          <Route exact path="/dashboard/home" component={HomeEdit} />
+          <Route exact path="/dashboard/about" component={AboutEdit} />
           {/* <Route exact path="/dashboard/projects" component={Projects} /> */}
           {/* <Route path="/user" component={BoardUser} /> */}
           {/* <Route path="/mod" component={BoardModerator} /> */}

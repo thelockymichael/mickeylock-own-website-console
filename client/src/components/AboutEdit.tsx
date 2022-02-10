@@ -2,28 +2,28 @@ import React, { useState, useEffect } from "react";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { editHome, getHome } from "../services/editWebsite.service";
+import { editAbout, getWebsite } from "../services/editWebsite.service";
 
-const Home: React.FC<{}> = () => {
+const About: React.FC<{}> = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [initValues, setInitValues] = useState<{
-    name: string;
-    descText: string;
+    aboutText: string;
+    profileImage: string;
   }>({
-    name: "",
-    descText: "",
+    aboutText: "",
+    profileImage: "",
   });
 
-  const sendForm = (formValue: { name: string; descText: string }) => {
-    const { name, descText } = formValue;
+  const sendForm = (formValue: { aboutText: string; profileImage: string }) => {
+    const { aboutText, profileImage } = formValue;
 
-    console.log("sendForm", name, descText);
+    console.log("sendForm", aboutText, profileImage);
 
     setMessage("");
     setLoading(true);
 
-    editHome(name, descText).then(
+    editAbout(aboutText, profileImage).then(
       () => {
         window.location.reload();
       },
@@ -42,19 +42,19 @@ const Home: React.FC<{}> = () => {
   };
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required("This field is required!"),
-    descText: Yup.string().required("This field is required!"),
+    aboutText: Yup.string().required("This field is required!"),
+    profileImage: Yup.string().required("This field is required!"),
   });
 
   useEffect(() => {
     const getInitValues = async () => {
-      const { data } = await getHome();
+      const { data } = await getWebsite();
 
-      console.log("data", data.name);
-      console.log("data", data.descText);
+      console.log("data", data.aboutText);
+      console.log("data", data.profileImage);
       setInitValues({
-        name: data.name,
-        descText: data.descText,
+        aboutText: data.aboutText,
+        profileImage: data.profileImage,
       });
     };
 
@@ -88,7 +88,7 @@ const Home: React.FC<{}> = () => {
       <div id="content">
         <div className="container">
           <header className="jumbotron">
-            <h3>Home Edit</h3>
+            <h3>About Edit</h3>
           </header>
           <Formik
             enableReinitialize
@@ -98,24 +98,24 @@ const Home: React.FC<{}> = () => {
           >
             <Form>
               <div className="form-group">
-                <label htmlFor="fullName">Full name</label>
-                <Field name="name" type="text" className="form-control" />
+                <label htmlFor="aboutText">About text</label>
+                <Field name="aboutText" type="text" className="form-control" />
                 <ErrorMessage
-                  name="name"
+                  name="aboutText"
                   component="div"
                   className="alert alert-danger"
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="descText">Description text</label>
+                <label htmlFor="profileImage">Profile URL</label>
                 <Field
-                  name="descText"
-                  type="descText"
+                  name="profileImage"
+                  type="profileImage"
                   className="form-control"
                 />
                 <ErrorMessage
-                  name="descText"
+                  name="profileImage"
                   component="div"
                   className="alert alert-danger"
                 />
@@ -149,4 +149,4 @@ const Home: React.FC<{}> = () => {
   );
 };
 
-export default Home;
+export default About;

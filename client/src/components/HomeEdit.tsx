@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { editHome, getHome } from "../services/editWebsite.service";
+import { editHome, getWebsite } from "../services/editWebsite.service";
 
-const About: React.FC<{}> = () => {
+const Home: React.FC<{}> = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [initValues, setInitValues] = useState<{
@@ -48,7 +48,7 @@ const About: React.FC<{}> = () => {
 
   useEffect(() => {
     const getInitValues = async () => {
-      const { data } = await getHome();
+      const { data } = await getWebsite();
 
       console.log("data", data.name);
       console.log("data", data.descText);
@@ -88,7 +88,7 @@ const About: React.FC<{}> = () => {
       <div id="content">
         <div className="container">
           <header className="jumbotron">
-            <h3>About Edit</h3>
+            <h3>Home Edit</h3>
           </header>
           <Formik
             enableReinitialize
@@ -98,24 +98,24 @@ const About: React.FC<{}> = () => {
           >
             <Form>
               <div className="form-group">
-                <label htmlFor="aboutText">About text</label>
-                <Field name="aboutText" type="text" className="form-control" />
+                <label htmlFor="fullName">Full name</label>
+                <Field name="name" type="text" className="form-control" />
                 <ErrorMessage
-                  name="aboutText"
+                  name="name"
                   component="div"
                   className="alert alert-danger"
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="profileUrl">Profile URL</label>
+                <label htmlFor="descText">Description text</label>
                 <Field
-                  name="profileUrl"
-                  type="profileUrl"
+                  name="descText"
+                  type="descText"
                   className="form-control"
                 />
                 <ErrorMessage
-                  name="profileUrl"
+                  name="descText"
                   component="div"
                   className="alert alert-danger"
                 />
@@ -149,4 +149,4 @@ const About: React.FC<{}> = () => {
   );
 };
 
-export default About;
+export default Home;

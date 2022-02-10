@@ -1,13 +1,12 @@
 import axios from "axios";
 import config from "../config/config";
-import ICurrentUser from "../types/currentUser.type";
 
 const API_URL = config.WEBSITE_API;
 
 // TODO
 // Must authenticate using JWT
 
-export const getHome = async () => {
+export const getWebsite = async () => {
   return axios.get(API_URL + "/api/website");
 };
 
@@ -26,11 +25,11 @@ export const editHome = (fullName: string, descText: string) => {
 };
 
 // ABOUT
-export const editAbout = (fullName: string, descText: string) => {
+export const editAbout = (aboutText: string, profileImage: string) => {
   return axios
     .put(API_URL + "/api/website/" + config.WEBSITE_ID, {
-      name: fullName,
-      descText,
+      aboutText,
+      profileImage,
     })
     .then((response) => {
       console.log("response", response.data);
