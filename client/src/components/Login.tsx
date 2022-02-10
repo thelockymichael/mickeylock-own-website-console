@@ -42,7 +42,6 @@ const Login: React.FC<Props> = ({ history }) => {
     login(username, password).then(
       () => {
         history.push("/dashboard");
-        window.location.reload();
       },
       (error) => {
         const resMessage =

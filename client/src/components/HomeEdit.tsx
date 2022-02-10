@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Field, Form, ErrorMessage, setIn } from "formik";
 import * as Yup from "yup";
 import { editHome, getWebsite } from "../services/editWebsite.service";
 
@@ -25,7 +25,7 @@ const Home: React.FC<{}> = () => {
 
     editHome(name, descText).then(
       () => {
-        // window.location.reload();
+        setLoading(false);
       },
       (error) => {
         const resMessage =

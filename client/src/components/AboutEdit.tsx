@@ -25,7 +25,7 @@ const About: React.FC<{}> = () => {
 
     editAbout(aboutText, profileImage).then(
       () => {
-        window.location.reload();
+        setLoading(false);
       },
       (error) => {
         const resMessage =
