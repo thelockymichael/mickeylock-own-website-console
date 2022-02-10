@@ -18,8 +18,6 @@ const Home: React.FC<{}> = () => {
   const sendForm = (formValue: { name: string; descText: string }) => {
     const { name, descText } = formValue;
 
-    console.log("sendForm", name, descText);
-
     setMessage("");
     setLoading(true);
 

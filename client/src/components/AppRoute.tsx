@@ -20,8 +20,6 @@ const AppRoute: React.FC<IAppRoutes> = ({
 }) => {
   const currentUser = getCurrentUser();
 
-  console.log("AppRoute, currentUser", currentUser);
-
   return (
     <Route
       exact={exact}

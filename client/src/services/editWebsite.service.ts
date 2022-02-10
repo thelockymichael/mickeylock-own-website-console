@@ -18,8 +18,6 @@ export const editHome = (fullName: string, descText: string) => {
       descText,
     })
     .then((response) => {
-      console.log("response", response.data);
-
       return response.data;
     });
 };
@@ -32,8 +30,6 @@ export const editAbout = (aboutText: string, profileImage: string) => {
       profileImage,
     })
     .then((response) => {
-      console.log("response", response.data);
-
       return response.data;
     });
 };
@@ -46,8 +42,6 @@ export const editProjects = (fullName: string, descText: string) => {
       descText,
     })
     .then((response) => {
-      console.log("response", response.data);
-
       return response.data;
     });
 };

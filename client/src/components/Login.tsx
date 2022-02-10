@@ -36,10 +36,6 @@ const Login: React.FC<Props> = ({ history }) => {
     setMessage("");
     setLoading(true);
 
-    console.log("username", username);
-    console.log("password", password);
-    console.log("api url", config.WEBSITE_API);
-
     login(username, password).then(
       () => {
         history.push("/dashboard");
