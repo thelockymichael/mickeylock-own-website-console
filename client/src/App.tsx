@@ -12,7 +12,6 @@ import Dashboard from "./components/Dashboard";
 
 import EventBus from "./common/EventBus";
 import ICurrentUser from "./types/currentUser.type";
-import Projects from "./components/Projects";
 import About from "./components/About";
 
 const App: React.FC = () => {
@@ -128,7 +127,7 @@ const App: React.FC = () => {
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/dashboard/home" component={Home} />
           <Route exact path="/dashboard/about" component={About} />
-          <Route exact path="/dashboard/projects" component={Projects} />
+          {/* <Route exact path="/dashboard/projects" component={Projects} /> */}
           {/* <Route path="/user" component={BoardUser} /> */}
           {/* <Route path="/mod" component={BoardModerator} /> */}
           {/* <Route path="/admin" component={BoardAdmin} />  */}

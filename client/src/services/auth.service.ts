@@ -4,6 +4,11 @@ import ICurrentUser from "../types/currentUser.type";
 
 const API_URL = config.WEBSITE_API;
 
+const headers = {
+  "Content-Type": "application/json",
+  "Access-Control-Allow-Origin": "*",
+};
+
 export const register = (username: string, password: string) => {
   return axios.post(API_URL + "signup", {
     fullName: username,
@@ -13,10 +18,14 @@ export const register = (username: string, password: string) => {
 
 export const login = (username: string, password: string) => {
   return axios
-    .post(API_URL + "/api/login", {
-      fullName: username,
-      password,
-    })
+    .post(
+      API_URL + "/api/login",
+      {
+        fullName: username,
+        password,
+      },
+      { headers: headers }
+    )
     .then((response) => {
       console.log("response", response.data);
 

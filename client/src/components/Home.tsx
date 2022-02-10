@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { editHome, getHome } from "../services/home.service";
+import { editHome, getHome } from "../services/editWebsite.service";
 
 const Home: React.FC<{}> = () => {
   const [loading, setLoading] = useState<boolean>(false);

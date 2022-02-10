@@ -2,8 +2,6 @@ import React from "react";
 import { getCurrentUser } from "../services/auth.service";
 
 const Dashboard: React.FC = () => {
-  console.log("AM I IN DASBOARD? ?");
-
   const currentUser = getCurrentUser();
 
   return (

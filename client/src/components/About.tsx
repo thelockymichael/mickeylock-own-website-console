@@ -1,8 +1,65 @@
-import React from "react";
-import { getCurrentUser } from "../services/auth.service";
+import React, { useState, useEffect } from "react";
 
-const About: React.FC = () => {
-  const currentUser = getCurrentUser();
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { editHome, getHome } from "../services/editWebsite.service";
+
+const About: React.FC<{}> = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
+  const [initValues, setInitValues] = useState<{
+    name: string;
+    descText: string;
+  }>({
+    name: "",
+    descText: "",
+  });
+
+  const sendForm = (formValue: { name: string; descText: string }) => {
+    const { name, descText } = formValue;
+
+    console.log("sendForm", name, descText);
+
+    setMessage("");
+    setLoading(true);
+
+    editHome(name, descText).then(
+      () => {
+        window.location.reload();
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        setLoading(false);
+        setMessage(resMessage);
+      }
+    );
+  };
+
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required("This field is required!"),
+    descText: Yup.string().required("This field is required!"),
+  });
+
+  useEffect(() => {
+    const getInitValues = async () => {
+      const { data } = await getHome();
+
+      console.log("data", data.name);
+      console.log("data", data.descText);
+      setInitValues({
+        name: data.name,
+        descText: data.descText,
+      });
+    };
+
+    getInitValues();
+  }, []);
 
   return (
     <div className="wrapper">
@@ -31,19 +88,61 @@ const About: React.FC = () => {
       <div id="content">
         <div className="container">
           <header className="jumbotron">
-            <h3>
-              <strong>{currentUser?.user.fullName}</strong> Dashboard
-            </h3>
+            <h3>About Edit</h3>
           </header>
-          <p>
-            <strong>Token:</strong> {currentUser?.authToken.substring(0, 20)}{" "}
-            ...{" "}
-            {currentUser?.authToken.substr(currentUser.authToken.length - 20)}
-          </p>
-          <p>
-            <strong>Id:</strong> {currentUser?.user._id}
-          </p>
-          <strong>Authorities:</strong>
+          <Formik
+            enableReinitialize
+            initialValues={initValues}
+            validationSchema={validationSchema}
+            onSubmit={sendForm}
+          >
+            <Form>
+              <div className="form-group">
+                <label htmlFor="aboutText">About text</label>
+                <Field name="aboutText" type="text" className="form-control" />
+                <ErrorMessage
+                  name="aboutText"
+                  component="div"
+                  className="alert alert-danger"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="profileUrl">Profile URL</label>
+                <Field
+                  name="profileUrl"
+                  type="profileUrl"
+                  className="form-control"
+                />
+                <ErrorMessage
+                  name="profileUrl"
+                  component="div"
+                  className="alert alert-danger"
+                />
+              </div>
+
+              <div className="form-group">
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-block"
+                  disabled={loading}
+                >
+                  {loading && (
+                    <span className="spinner-border spinner-border-sm"></span>
+                  )}
+                  <span>Save</span>
+                </button>
+              </div>
+
+              {message && (
+                <div className="form-group">
+                  <div className="alert alert-danger" role="alert">
+                    {message}
+                  </div>
+                </div>
+              )}
+            </Form>
+          </Formik>
         </div>
       </div>
     </div>
