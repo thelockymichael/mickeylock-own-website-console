@@ -42,23 +42,23 @@ const Register: React.FC = () => {
   const handleRegister = (formValue: IUser) => {
     const { fullName, passwordHash } = formValue;
 
-    register(fullName, passwordHash).then(
-      (response) => {
-        setMessage(response.data.message);
-        setSuccessful(true);
-      },
-      (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
+    // register(fullName, passwordHash).then(
+    //   (response) => {
+    //     setMessage(response.data.message);
+    //     setSuccessful(true);
+    //   },
+    //   (error) => {
+    //     const resMessage =
+    //       (error.response &&
+    //         error.response.data &&
+    //         error.response.data.message) ||
+    //       error.message ||
+    //       error.toString();
 
-        setMessage(resMessage);
-        setSuccessful(false);
-      }
-    );
+    //     setMessage(resMessage);
+    //     setSuccessful(false);
+    //   }
+    // );
   };
 
   return (

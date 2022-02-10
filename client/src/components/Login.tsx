@@ -13,6 +13,7 @@ interface RouterProps {
 type Props = RouteComponentProps<RouterProps>;
 
 const Login: React.FC<Props> = ({ history }) => {
+  // const dispatch = useAuthDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
 

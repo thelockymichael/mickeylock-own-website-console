@@ -5,23 +5,23 @@ import "./App.css";
 
 import * as AuthService from "./services/auth.service";
 
-import Login from "./components/Login";
-// import Register from "./components/Register";
-import HomeEdit from "./components/HomeEdit";
-import AboutEdit from "./components/AboutEdit";
-import HomePage from "./components/HomePage";
-import Dashboard from "./components/Dashboard";
-
 import EventBus from "./common/EventBus";
 import ICurrentUser from "./types/currentUser.type";
-import NotFound from "./components/NotFound";
+import routes from "./config/routes";
+import AppRoute from "./components/AppRoute";
 
 const App: React.FC = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
   const [showAdminBoard, setShowAdminBoard] = useState<boolean>(false);
-  const [currentUser, setCurrentUser] = useState<ICurrentUser | undefined>(
-    undefined
-  );
+  const [currentUser, setCurrentUser] = useState<ICurrentUser | undefined>({
+    authToken: "",
+    user: {
+      fullName: "",
+      about: "",
+      profileImage: "",
+      projects: [],
+    },
+  });
 
   useEffect(() => {
     const user = AuthService.getCurrentUser();
@@ -122,14 +122,15 @@ const App: React.FC = () => {
 
       <div className="container mt-3">
         <Switch>
-          <Route exact path={["/", "/home"]} component={HomePage} />
-          <Route exact path="/login" component={Login} />
-
-          {/* <Route exact path="/register" component={Register} /> */}
-          <Route exact path="/dashboard" component={Dashboard} />
-          <Route exact path="/dashboard/home" component={HomeEdit} />
-          <Route exact path="/dashboard/about" component={AboutEdit} />
-          <Route component={NotFound} />
+          {routes.map((route) => (
+            <AppRoute
+              exact={route.exact}
+              key={route.path}
+              path={route.path}
+              component={route.component}
+              isPrivate={route.isPrivate}
+            />
+          ))}
 
           {/* <Route exact path="/dashboard/projects" component={Projects} /> */}
           {/* <Route path="/user" component={BoardUser} /> */}
@@ -142,3 +143,18 @@ const App: React.FC = () => {
 };
 
 export default App;
+
+{
+  /* <Route exact path={["/", "/home"]} component={HomePage} />
+<Route exact path="/login" component={Login} /> */
+}
+
+{
+  /* <Route exact path="/register" component={Register} /> */
+}
+{
+  /* <Route exact path="/dashboard" component={Dashboard} />
+<Route exact path="/dashboard/home" component={HomeEdit} />
+<Route exact path="/dashboard/about" component={AboutEdit} />
+<Route component={NotFound} /> */
+}
