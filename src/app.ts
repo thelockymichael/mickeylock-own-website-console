@@ -16,12 +16,9 @@ import { userRouter, websiteRouter, projectRouter } from "./routes";
 
 const app: Application = express();
 
-// Add a list of allowed origins.
-// If you have more origins you would like to add, you can add them to the array below.
-const allowedOrigins = ["http://localhost:3000"]; // Not sure, if I need this line
-
 const options: cors.CorsOptions = {
-  origin: allowedOrigins,
+  credentials: true,
+  origin: true,
 };
 
 app.use(cors(options));

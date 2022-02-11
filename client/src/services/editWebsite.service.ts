@@ -30,7 +30,7 @@ export const editWebsite = (formValues: IWebsite) => {
 
 export const removeImg = (deleteImg: string) => {
   return axios
-    .delete("localhost:3001" + "/api/website/uploaded/images/" + deleteImg)
+    .delete(API_URL + "/api/website/uploaded/images/" + deleteImg)
     .then((response) => {
       console.log("response.data", response.data);
 
