@@ -13,8 +13,6 @@ export const getWebsite = async () => {
 
 // EDIT WEBSITE
 export const editWebsite = (formValues: IWebsite) => {
-  console.log("LOL", API_URL);
-
   console.log("formValues", formValues);
 
   return axios
@@ -31,6 +29,16 @@ export const editWebsite = (formValues: IWebsite) => {
 export const removeImg = (deleteImg: string) => {
   return axios
     .delete(API_URL + "/api/website/uploaded/images/" + deleteImg)
+    .then((response) => {
+      console.log("response.data", response.data);
+
+      return response.data;
+    });
+};
+
+export const chooseImg = (selectedImg: string) => {
+  return axios
+    .put(API_URL + "/api/website/uploaded/images/" + selectedImg)
     .then((response) => {
       console.log("response.data", response.data);
 

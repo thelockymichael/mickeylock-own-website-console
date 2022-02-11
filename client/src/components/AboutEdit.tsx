@@ -6,6 +6,7 @@ import {
   editWebsite,
   removeImg,
   getWebsite,
+  chooseImg,
 } from "../services/editWebsite.service";
 import config from "../config/config";
 
@@ -75,23 +76,16 @@ const About: React.FC<{}> = () => {
   const deleteImage = (deleteImg) => {
     console.log("removeImage", deleteImg);
 
-    removeImg(deleteImg);
-
-    // const { data } = await getWebsite();
-    // console.log("data.response", data);
-
-    // setMessage("");
-    // setLoading(true);
-    // removeImg(deleteImg).then(() => {});
-
     removeImg(deleteImg).then(
-      (respon) => {
+      (response) => {
         setLoading(false);
 
-        // setInitValues({
-        //   ...initValues,
-        //   uploadedImgs: data.uploadedImgs,
-        // });
+        const { updatedWebsite } = response;
+
+        setInitValues({
+          ...initValues,
+          uploadedImgs: updatedWebsite.uploadedImgs,
+        });
       },
       (error) => {
         const resMessage =
@@ -106,6 +100,38 @@ const About: React.FC<{}> = () => {
       }
     );
   };
+
+  const selectImage = (selectedProfileImg) => {
+    console.log("selectedImg", selectedProfileImg);
+
+    chooseImg(selectedProfileImg).then(
+      (response) => {
+        setLoading(false);
+
+        const { updatedWebsite } = response;
+
+        console.log("updatedWebsite", updatedWebsite);
+
+        setInitValues({
+          ...initValues,
+          selectedProfileImg: updatedWebsite.selectedProfileImg,
+        });
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        setLoading(false);
+        setMessage(resMessage);
+      }
+    );
+  };
+
+  const hasUploadedImgs = initValues.uploadedImgs ? true : false;
 
   return (
     <div className="wrapper">
@@ -147,7 +173,7 @@ const About: React.FC<{}> = () => {
                 <label htmlFor="About">About text</label>
                 <Field name="aboutText" type="text" className="form-control" />
                 <ErrorMessage
-                  name="name"
+                  name="aboutText"
                   component="div"
                   className="alert alert-danger"
                 />
@@ -193,28 +219,51 @@ const About: React.FC<{}> = () => {
           </Formik>
           <div className="container-fluid pt-3">
             <div className="card-columns">
-              {initValues.uploadedImgs.map((itemImg) => (
-                <div key={itemImg} className="card">
-                  <img
-                    className="card-img-top"
-                    width={"80px"}
-                    alt="profile"
-                    src={config.WEBSITE_API + "/thumbnails/" + itemImg}
-                  />
-                  <div className="form-group">
-                    <button
-                      onClick={(event) => removeImg(itemImg)}
-                      className="btn btn-danger btn-block"
-                      disabled={loading}
-                    >
-                      {loading && (
-                        <span className="spinner-border spinner-border-sm"></span>
-                      )}
-                      <span>Remove</span>
-                    </button>
+              {hasUploadedImgs &&
+                initValues.uploadedImgs.map((itemImg) => (
+                  <div
+                    key={itemImg}
+                    className={
+                      initValues.selectedProfileImg === itemImg
+                        ? "card selected-card"
+                        : "card"
+                    }
+                  >
+                    <img
+                      className="card-img-top"
+                      width={"80px"}
+                      alt={itemImg}
+                      src={config.WEBSITE_API + "/thumbnails/" + itemImg}
+                    />
+                    <div className="form-group">
+                      <p>{itemImg}</p>
+                      <button
+                        onClick={() => selectImage(itemImg)}
+                        className="btn btn-primary btn-block"
+                        disabled={
+                          initValues.selectedProfileImg === itemImg
+                            ? true
+                            : false
+                        }
+                      >
+                        {loading && (
+                          <span className="spinner-border spinner-border-sm"></span>
+                        )}
+                        <span>Select</span>
+                      </button>
+                      <button
+                        onClick={() => deleteImage(itemImg)}
+                        className="btn btn-danger btn-block"
+                        disabled={loading}
+                      >
+                        {loading && (
+                          <span className="spinner-border spinner-border-sm"></span>
+                        )}
+                        <span>Remove</span>
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         </div>
