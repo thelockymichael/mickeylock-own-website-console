@@ -1,5 +1,6 @@
 import axios from "axios";
 import config from "../config/config";
+import IWebsite from "../types/website.type";
 
 const API_URL = config.WEBSITE_API;
 
@@ -10,38 +11,29 @@ export const getWebsite = async () => {
   return axios.get(API_URL + "/api/website");
 };
 
-// HOME
-export const editHome = (fullName: string, descText: string) => {
+// EDIT WEBSITE
+export const editWebsite = (formValues: IWebsite) => {
+  console.log("LOL", API_URL);
+
+  console.log("formValues", formValues);
+
   return axios
-    .put(API_URL + "/api/website/" + config.WEBSITE_ID, {
-      name: fullName,
-      descText,
+    .put(API_URL + "/api/website/", {
+      ...formValues,
     })
     .then((response) => {
+      console.log("response.data", response.data);
+
       return response.data;
     });
 };
 
-// ABOUT
-export const editAbout = (aboutText: string, profileImage: string) => {
+export const removeImg = (deleteImg: string) => {
   return axios
-    .put(API_URL + "/api/website/" + config.WEBSITE_ID, {
-      aboutText,
-      profileImage,
-    })
+    .delete("localhost:3001" + "/api/website/uploaded/images/" + deleteImg)
     .then((response) => {
-      return response.data;
-    });
-};
+      console.log("response.data", response.data);
 
-// PROJECTS
-export const editProjects = (fullName: string, descText: string) => {
-  return axios
-    .put(API_URL + "/api/website/" + config.WEBSITE_ID, {
-      name: fullName,
-      descText,
-    })
-    .then((response) => {
       return response.data;
     });
 };

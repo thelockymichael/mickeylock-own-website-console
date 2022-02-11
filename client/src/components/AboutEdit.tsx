@@ -2,28 +2,36 @@ import React, { useState, useEffect } from "react";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { editAbout, getWebsite } from "../services/editWebsite.service";
+import {
+  editWebsite,
+  removeImg,
+  getWebsite,
+} from "../services/editWebsite.service";
+import config from "../config/config";
 
 const About: React.FC<{}> = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [initValues, setInitValues] = useState<{
     aboutText: string;
-    profileImage: string;
+    selectedProfileImg: string;
+    uploadedImgs: Array<string>;
   }>({
     aboutText: "",
-    profileImage: "",
+    selectedProfileImg: "",
+    uploadedImgs: [],
   });
 
-  const sendForm = (formValue: { aboutText: string; profileImage: string }) => {
-    const { aboutText, profileImage } = formValue;
+  //console.log(config.WEBSITE_API + "/thumbnails/" + initValues.uploadedImgs[1]);
 
-    console.log("sendForm", aboutText, profileImage);
-
+  const sendForm = (formValues: {
+    aboutText: string;
+    selectedProfileImg: string;
+  }) => {
     setMessage("");
     setLoading(true);
 
-    editAbout(aboutText, profileImage).then(
+    editWebsite(formValues).then(
       () => {
         setLoading(false);
       },
@@ -43,23 +51,61 @@ const About: React.FC<{}> = () => {
 
   const validationSchema = Yup.object().shape({
     aboutText: Yup.string().required("This field is required!"),
-    profileImage: Yup.string().required("This field is required!"),
+    selectedProfileImg: Yup.string().required("This field is required!"),
   });
 
   useEffect(() => {
     const getInitValues = async () => {
       const { data } = await getWebsite();
 
-      console.log("data", data.aboutText);
-      console.log("data", data.profileImage);
+      console.log("uploadedImages", data.uploadedImgs);
+
       setInitValues({
         aboutText: data.aboutText,
-        profileImage: data.profileImage,
+        selectedProfileImg: data.selectedProfileImg,
+        uploadedImgs: data.uploadedImgs,
       });
     };
 
     getInitValues();
   }, []);
+
+  const [modal, setModal] = useState<boolean>(false);
+
+  const deleteImage = (deleteImg) => {
+    console.log("removeImage", deleteImg);
+
+    removeImg(deleteImg);
+
+    // const { data } = await getWebsite();
+    // console.log("data.response", data);
+
+    // setMessage("");
+    // setLoading(true);
+    // removeImg(deleteImg).then(() => {});
+
+    removeImg(deleteImg).then(
+      (respon) => {
+        setLoading(false);
+
+        // setInitValues({
+        //   ...initValues,
+        //   uploadedImgs: data.uploadedImgs,
+        // });
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        setLoading(false);
+        setMessage(resMessage);
+      }
+    );
+  };
 
   return (
     <div className="wrapper">
@@ -98,24 +144,26 @@ const About: React.FC<{}> = () => {
           >
             <Form>
               <div className="form-group">
-                <label htmlFor="aboutText">About text</label>
+                <label htmlFor="About">About text</label>
                 <Field name="aboutText" type="text" className="form-control" />
                 <ErrorMessage
-                  name="aboutText"
+                  name="name"
                   component="div"
                   className="alert alert-danger"
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="profileImage">Profile URL</label>
+                <label htmlFor="selctedProfileImg">
+                  Selected Profile Image
+                </label>
                 <Field
-                  name="profileImage"
-                  type="profileImage"
+                  name="selectedProfileImg"
+                  type="text"
                   className="form-control"
                 />
                 <ErrorMessage
-                  name="profileImage"
+                  name="selectedProfileImg"
                   component="div"
                   className="alert alert-danger"
                 />
@@ -143,6 +191,32 @@ const About: React.FC<{}> = () => {
               )}
             </Form>
           </Formik>
+          <div className="container-fluid pt-3">
+            <div className="card-columns">
+              {initValues.uploadedImgs.map((itemImg) => (
+                <div key={itemImg} className="card">
+                  <img
+                    className="card-img-top"
+                    width={"80px"}
+                    alt="profile"
+                    src={config.WEBSITE_API + "/thumbnails/" + itemImg}
+                  />
+                  <div className="form-group">
+                    <button
+                      onClick={(event) => removeImg(itemImg)}
+                      className="btn btn-danger btn-block"
+                      disabled={loading}
+                    >
+                      {loading && (
+                        <span className="spinner-border spinner-border-sm"></span>
+                      )}
+                      <span>Remove</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

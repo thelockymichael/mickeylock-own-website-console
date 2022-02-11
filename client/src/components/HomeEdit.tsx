@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-import { Formik, Field, Form, ErrorMessage, setIn } from "formik";
+import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { editHome, getWebsite } from "../services/editWebsite.service";
+import { editWebsite, getWebsite } from "../services/editWebsite.service";
 
-const Home: React.FC<{}> = () => {
+const HomeEdit: React.FC<{}> = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [initValues, setInitValues] = useState<{
@@ -15,13 +15,11 @@ const Home: React.FC<{}> = () => {
     descText: "",
   });
 
-  const sendForm = (formValue: { name: string; descText: string }) => {
-    const { name, descText } = formValue;
-
+  const sendForm = (formValues: { name: string; descText: string }) => {
     setMessage("");
     setLoading(true);
 
-    editHome(name, descText).then(
+    editWebsite(formValues).then(
       () => {
         setLoading(false);
       },
@@ -48,8 +46,6 @@ const Home: React.FC<{}> = () => {
     const getInitValues = async () => {
       const { data } = await getWebsite();
 
-      console.log("data", data.name);
-      console.log("data", data.descText);
       setInitValues({
         name: data.name,
         descText: data.descText,
@@ -72,7 +68,7 @@ const Home: React.FC<{}> = () => {
           </li>
 
           <li>
-            <a href="/dashboard/home">Home</a>
+            <a href="/dashboard/Edit">Home</a>
           </li>
           <li>
             <a href="/dashboard/about">About</a>
@@ -107,11 +103,7 @@ const Home: React.FC<{}> = () => {
 
               <div className="form-group">
                 <label htmlFor="descText">Description text</label>
-                <Field
-                  name="descText"
-                  type="descText"
-                  className="form-control"
-                />
+                <Field name="descText" type="text" className="form-control" />
                 <ErrorMessage
                   name="descText"
                   component="div"
@@ -147,4 +139,4 @@ const Home: React.FC<{}> = () => {
   );
 };
 
-export default Home;
+export default HomeEdit;

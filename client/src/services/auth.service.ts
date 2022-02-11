@@ -30,8 +30,6 @@ export const login = (username: string, password: string) => {
       { headers: headers }
     )
     .then((response) => {
-      console.log("response", response.data);
-
       if (response.data.authToken) {
         localStorage.setItem("user", JSON.stringify(response.data));
       }
