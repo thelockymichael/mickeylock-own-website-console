@@ -14,13 +14,21 @@ code {
 
 .wrapper {
   display: flex;
-  width: 100%;
+  align-items: stretch;
 }
+
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
 
 #sidebar {
   min-width: 250px;
   max-width: 250px;
   min-height: 100vh;
+}
+
+#sidebarCollapse {
+  display: none;
 }
 
 #sidebar.active {
@@ -92,11 +100,42 @@ ul ul a {
 
 /* END  */
 
+/* ---------------------------------------------------
+    NAVBAR STYLE
+----------------------------------------------------- */
+
+.navbar {
+  padding: 15px 10px;
+  background: #fff;
+  border: none;
+  border-radius: 0;
+  margin-bottom: 40px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-btn {
+  box-shadow: none;
+  outline: none !important;
+  border: none;
+}
+
+/* ---------------------------------------------------
+    Dashboard HEADER container
+----------------------------------------------------- */
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+}
+
 @media (max-width: 768px) {
   #sidebar {
     margin-left: -250px;
   }
   #sidebar.active {
     margin-left: 0;
+  }
+  #sidebarCollapse {
+    display: inline;
   }
 }

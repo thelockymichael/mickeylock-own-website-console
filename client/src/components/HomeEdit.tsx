@@ -3,8 +3,15 @@ import React, { useState, useEffect } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { editWebsite, getWebsite } from "../services/editWebsite.service";
+// Icons
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGithub, faInstagram } from "@fortawesome/free-brands-svg-icons";
+import { faBars, faHamburger } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
+import Sidebar from "./Sidebar";
 
 const HomeEdit: React.FC<{}> = () => {
+  const [sidebarClass, toggleSidebarClass] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [initValues, setInitValues] = useState<{
@@ -57,31 +64,21 @@ const HomeEdit: React.FC<{}> = () => {
 
   return (
     <div className="wrapper">
-      <nav id="sidebar">
-        <div className="sidebar-header">
-          <h3>Mickeylock.com</h3>
-        </div>
-
-        <ul className="list-unstyled components">
-          <li className="active">
-            <a href="/dashboard">Dashboard</a>
-          </li>
-
-          <li>
-            <a href="/dashboard/Edit">Home</a>
-          </li>
-          <li>
-            <a href="/dashboard/about">About</a>
-          </li>
-          <li>
-            <a href="/dashboard/projects">Projects</a>
-          </li>
-        </ul>
-      </nav>
+      <Sidebar sidebarClass={sidebarClass} />
 
       <div id="content">
         <div className="container">
-          <header className="jumbotron">
+          <header className="dashboard-header">
+            <button
+              onClick={() => {
+                toggleSidebarClass(!sidebarClass);
+              }}
+              type="button"
+              id="sidebarCollapse"
+              className="btn btn-info"
+            >
+              <FontAwesomeIcon size="4x" color="#FFF" icon={faBars} />
+            </button>
             <h3>Home Edit</h3>
           </header>
           <Formik

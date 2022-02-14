@@ -143,18 +143,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-
-{
-  /* <Route exact path={["/", "/home"]} component={HomePage} />
-<Route exact path="/login" component={Login} /> */
-}
-
-{
-  /* <Route exact path="/register" component={Register} /> */
-}
-{
-  /* <Route exact path="/dashboard" component={Dashboard} />
-<Route exact path="/dashboard/home" component={HomeEdit} />
-<Route exact path="/dashboard/about" component={AboutEdit} />
-<Route component={NotFound} /> */
-}

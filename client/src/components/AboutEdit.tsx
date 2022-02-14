@@ -8,9 +8,12 @@ import {
   getWebsite,
   chooseImg,
 } from "../services/editWebsite.service";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 import config from "../config/config";
 
 const About: React.FC<{}> = () => {
+  const [sidebarClass, toggleSidebarClass] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [initValues, setInitValues] = useState<{
@@ -133,6 +136,10 @@ const About: React.FC<{}> = () => {
 
   const hasUploadedImgs = initValues.uploadedImgs ? true : false;
 
+  // TODO
+  // 1. Multi form for Image file upload
+  // 2. ???
+
   return (
     <div className="wrapper">
       <nav id="sidebar">
@@ -159,7 +166,17 @@ const About: React.FC<{}> = () => {
 
       <div id="content">
         <div className="container">
-          <header className="jumbotron">
+          <header className="dashboard-header">
+            <button
+              onClick={() => {
+                toggleSidebarClass(!sidebarClass);
+              }}
+              type="button"
+              id="sidebarCollapse"
+              className="btn btn-info"
+            >
+              <FontAwesomeIcon size="4x" color="#FFF" icon={faBars} />
+            </button>
             <h3>About Edit</h3>
           </header>
           <Formik
