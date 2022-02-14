@@ -207,54 +207,49 @@ const About: React.FC<{}> = () => {
             </Form>
           </Formik>
           <FileUploader initValues={initValues} setInitValues={setInitValues} />
-          <div className="container-fluid pt-3">
-            <div className="card-columns">
-              {hasUploadedImgs &&
-                initValues.uploadedImgs.map((itemImg) => (
-                  <div
-                    key={itemImg}
-                    className={
-                      initValues.selectedProfileImg === itemImg
-                        ? "card selected-card"
-                        : "card"
-                    }
-                  >
-                    <img
-                      className="card-img-top"
-                      width={"80px"}
-                      alt={itemImg}
-                      src={config.WEBSITE_API + "/thumbnails/" + itemImg}
-                    />
-                    <div className="form-group">
-                      <p>{itemImg}</p>
-                      <button
-                        onClick={() => selectImage(itemImg)}
-                        className="btn btn-primary btn-block"
-                        disabled={
-                          initValues.selectedProfileImg === itemImg
-                            ? true
-                            : false
-                        }
-                      >
-                        {loading && (
-                          <span className="spinner-border spinner-border-sm"></span>
-                        )}
-                        <span>Select</span>
-                      </button>
-                      <button
-                        onClick={() => deleteImage(itemImg)}
-                        className="btn btn-danger btn-block"
-                        disabled={loading}
-                      >
-                        {loading && (
-                          <span className="spinner-border spinner-border-sm"></span>
-                        )}
-                        <span>Remove</span>
-                      </button>
-                    </div>
+          <div className="card-columns">
+            {hasUploadedImgs &&
+              initValues.uploadedImgs.map((itemImg) => (
+                <div
+                  key={itemImg}
+                  className={
+                    initValues.selectedProfileImg === itemImg
+                      ? "card selected-card"
+                      : "card"
+                  }
+                >
+                  <img
+                    className="card-img-top"
+                    alt={itemImg}
+                    src={config.WEBSITE_API + "/thumbnails/" + itemImg}
+                  />
+                  <div className="form-group">
+                    <p>{itemImg}</p>
+                    <button
+                      onClick={() => selectImage(itemImg)}
+                      className="btn btn-primary btn-block"
+                      disabled={
+                        initValues.selectedProfileImg === itemImg ? true : false
+                      }
+                    >
+                      {loading && (
+                        <span className="spinner-border spinner-border-sm"></span>
+                      )}
+                      <span>Select</span>
+                    </button>
+                    <button
+                      onClick={() => deleteImage(itemImg)}
+                      className="btn btn-danger btn-block"
+                      disabled={loading}
+                    >
+                      {loading && (
+                        <span className="spinner-border spinner-border-sm"></span>
+                      )}
+                      <span>Remove</span>
+                    </button>
                   </div>
-                ))}
-            </div>
+                </div>
+              ))}
           </div>
         </div>
       </div>
