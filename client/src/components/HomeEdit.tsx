@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -7,8 +7,13 @@ import { editWebsite, getWebsite } from "../services/editWebsite.service";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import Sidebar from "./Sidebar";
+import { WebsiteContext } from "../contexts/website";
 
 const HomeEdit: React.FC<{}> = () => {
+  const { website } = useContext(WebsiteContext);
+
+  console.log("website", website);
+
   const [sidebarClass, toggleSidebarClass] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
@@ -16,8 +21,8 @@ const HomeEdit: React.FC<{}> = () => {
     name: string;
     descText: string;
   }>({
-    name: "",
-    descText: "",
+    name: website.name || "",
+    descText: website.descText || "",
   });
 
   const sendForm = (formValues: { name: string; descText: string }) => {
@@ -47,18 +52,18 @@ const HomeEdit: React.FC<{}> = () => {
     descText: Yup.string().required("This field is required!"),
   });
 
-  useEffect(() => {
-    const getInitValues = async () => {
-      const { data } = await getWebsite();
+  // useEffect(() => {
+  //   const getInitValues = async () => {
+  //     const { data } = await getWebsite();
 
-      setInitValues({
-        name: data.name,
-        descText: data.descText,
-      });
-    };
+  //     setInitValues({
+  //       name: data.name,
+  //       descText: data.descText,
+  //     });
+  //   };
 
-    getInitValues();
-  }, []);
+  //   getInitValues();
+  // }, []);
 
   return (
     <div className="wrapper">

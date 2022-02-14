@@ -11,6 +11,14 @@ export const getWebsite = async () => {
   return axios.get(API_URL + "/api/website");
 };
 
+export const initWebsite = () => {
+  return axios.post(API_URL + "/api/website").then((response) => {
+    console.log("response.data", response.data);
+
+    return response.data;
+  });
+};
+
 // EDIT WEBSITE
 export const editWebsite = (formValues: IWebsite) => {
   console.log("formValues", formValues);
