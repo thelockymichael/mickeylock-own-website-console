@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import config from "../config/config";
 import Sidebar from "./Sidebar";
+import { FileUploader } from "./FileUploader";
 
 const About: React.FC<{}> = () => {
   const [sidebarClass, toggleSidebarClass] = useState<boolean>(false);
@@ -169,25 +170,15 @@ const About: React.FC<{}> = () => {
             <Form>
               <div className="form-group">
                 <label htmlFor="About">About text</label>
-                <Field name="aboutText" type="text" className="form-control" />
-                <ErrorMessage
-                  name="aboutText"
-                  component="div"
-                  className="alert alert-danger"
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="selctedProfileImg">
-                  Selected Profile Image
-                </label>
                 <Field
-                  name="selectedProfileImg"
+                  component="textarea"
+                  rows="4"
+                  name="aboutText"
                   type="text"
                   className="form-control"
                 />
                 <ErrorMessage
-                  name="selectedProfileImg"
+                  name="aboutText"
                   component="div"
                   className="alert alert-danger"
                 />
@@ -215,6 +206,7 @@ const About: React.FC<{}> = () => {
               )}
             </Form>
           </Formik>
+          <FileUploader initValues={initValues} setInitValues={setInitValues} />
           <div className="container-fluid pt-3">
             <div className="card-columns">
               {hasUploadedImgs &&

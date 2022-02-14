@@ -45,3 +45,11 @@ export const chooseImg = (selectedImg: string) => {
       return response.data;
     });
 };
+
+export const uploadImg = (data: FormData) => {
+  return axios.put(API_URL + "/api/website/", data).then((response) => {
+    console.log("response.data", response.data);
+
+    return response.data;
+  });
+};

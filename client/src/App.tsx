@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Switch, Route, Link } from "react-router-dom";
+import { Switch, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
@@ -117,7 +117,6 @@ const App: React.FC = () => {
       {/*
        TODO 
         1. Login and get authToken
-      
       */}
 
       <div className="container mt-3">
