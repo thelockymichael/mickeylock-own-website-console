@@ -11,6 +11,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import config from "../config/config";
+import Sidebar from "./Sidebar";
 
 const About: React.FC<{}> = () => {
   const [sidebarClass, toggleSidebarClass] = useState<boolean>(false);
@@ -142,27 +143,7 @@ const About: React.FC<{}> = () => {
 
   return (
     <div className="wrapper">
-      <nav id="sidebar">
-        <div className="sidebar-header">
-          <h3>Mickeylock.com</h3>
-        </div>
-
-        <ul className="list-unstyled components">
-          <li className="active">
-            <a href="/dashboard">Dashboard</a>
-          </li>
-
-          <li>
-            <a href="/dashboard/home">Home</a>
-          </li>
-          <li>
-            <a href="/dashboard/about">About</a>
-          </li>
-          <li>
-            <a href="/dashboard/projects">Projects</a>
-          </li>
-        </ul>
-      </nav>
+      <Sidebar sidebarClass={sidebarClass} />
 
       <div id="content">
         <div className="container">
