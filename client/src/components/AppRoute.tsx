@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { RouteProps, Redirect, Route } from "react-router-dom";
 
 import paths from "../config/routeUrls";

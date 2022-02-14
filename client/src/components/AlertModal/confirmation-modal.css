@@ -1,0 +1,28 @@
+.confirmation-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.message {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.yes-button {
+  width: 6rem;
+  background-color: yellow;
+}
+
+.yes-button:hover {
+  background-color: red;
+}
+
+.no-button {
+  width: 3rem;
+  background-color: lightgrey;
+}
+
+.no-button:hover {
+  background-color: grey;
+}

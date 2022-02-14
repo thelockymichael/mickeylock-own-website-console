@@ -28,8 +28,6 @@ const App: React.FC = () => {
 
     if (user) {
       setCurrentUser(user);
-      // setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
-      // setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
     }
 
     EventBus.on("logout", logOut);
@@ -114,11 +112,6 @@ const App: React.FC = () => {
         )}
       </nav>
 
-      {/*
-       TODO 
-        1. Login and get authToken
-      */}
-
       <div className="container mt-3">
         <Switch>
           {routes.map((route) => (
@@ -130,11 +123,6 @@ const App: React.FC = () => {
               isPrivate={route.isPrivate}
             />
           ))}
-
-          {/* <Route exact path="/dashboard/projects" component={Projects} /> */}
-          {/* <Route path="/user" component={BoardUser} /> */}
-          {/* <Route path="/mod" component={BoardModerator} /> */}
-          {/* <Route path="/admin" component={BoardAdmin} />  */}
         </Switch>
       </div>
     </div>

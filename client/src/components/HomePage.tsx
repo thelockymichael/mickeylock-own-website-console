@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 
 const HomePage: React.FC = () => {
-  const [content, setContent] = useState<string>("");
-
   return (
     <div className="container">
       <header className="jumbotron">
-        <h3>{content}</h3>
+        <h3>Content</h3>
       </header>
     </div>
   );

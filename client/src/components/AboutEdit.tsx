@@ -13,6 +13,9 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import config from "../config/config";
 import Sidebar from "./Sidebar";
 import { FileUploader } from "./FileUploader";
+import { useModal } from "../hooks/useModal";
+import { Modal } from "./AlertModal";
+import { ConfirmationModal } from "./AlertModal/confirmation-modal";
 
 const About: React.FC<{}> = () => {
   const [sidebarClass, toggleSidebarClass] = useState<boolean>(false);
@@ -75,8 +78,6 @@ const About: React.FC<{}> = () => {
 
     getInitValues();
   }, []);
-
-  const [modal, setModal] = useState<boolean>(false);
 
   const deleteImage = (deleteImg) => {
     console.log("removeImage", deleteImg);
@@ -141,11 +142,19 @@ const About: React.FC<{}> = () => {
   // TODO
   // 1. Multi form for Image file upload
   // 2. ???
+  const { isShown, selectedItem, toggle } = useModal();
+
+  const onConfirm = () => {
+    deleteImage(selectedItem);
+    toggle();
+  };
+  const onCancel = () => {
+    toggle();
+  };
 
   return (
     <div className="wrapper">
       <Sidebar sidebarClass={sidebarClass} />
-
       <div id="content">
         <div className="container">
           <header className="dashboard-header">
@@ -207,6 +216,7 @@ const About: React.FC<{}> = () => {
             </Form>
           </Formik>
           <FileUploader initValues={initValues} setInitValues={setInitValues} />
+          {/* <button onClick={toggle}>Open modal</button> */}
           <div className="card-columns">
             {hasUploadedImgs &&
               initValues.uploadedImgs.map((itemImg) => (
@@ -238,7 +248,7 @@ const About: React.FC<{}> = () => {
                       <span>Select</span>
                     </button>
                     <button
-                      onClick={() => deleteImage(itemImg)}
+                      onClick={() => toggle(itemImg)}
                       className="btn btn-danger btn-block"
                       disabled={loading}
                     >
@@ -253,6 +263,18 @@ const About: React.FC<{}> = () => {
           </div>
         </div>
       </div>
+      <Modal
+        headerText="Delete profile image?"
+        isShown={isShown}
+        hide={toggle}
+        modalContent={
+          <ConfirmationModal
+            onConfirm={onConfirm}
+            onCancel={onCancel}
+            message="Are you sure you want to delete selected profile image?"
+          />
+        }
+      />
     </div>
   );
 };

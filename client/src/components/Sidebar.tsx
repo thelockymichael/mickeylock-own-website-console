@@ -1,12 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import { editWebsite, getWebsite } from "../services/editWebsite.service";
-// Icons
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGithub, faInstagram } from "@fortawesome/free-brands-svg-icons";
-import { faBars, faHamburger } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 interface IProps {

@@ -1,5 +1,5 @@
 import React, { SetStateAction, Dispatch, useState } from "react";
-import { editWebsite, uploadImg } from "../../services/editWebsite.service";
+import { uploadImg } from "../../services/editWebsite.service";
 import IWebsite from "../../types/website.type";
 import "./styles.css";
 

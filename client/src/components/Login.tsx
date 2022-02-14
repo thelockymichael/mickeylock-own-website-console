@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import config from "../config/config";
 
 import { login } from "../services/auth.service";
 import { RouteComponentProps } from "react-router-dom";
