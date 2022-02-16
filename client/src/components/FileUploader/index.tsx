@@ -1,29 +1,23 @@
 import React, { SetStateAction, Dispatch, useState } from "react";
 import { uploadImg } from "../../services/editWebsite.service";
+import IImage from "../../types/image";
 import IWebsite from "../../types/website.type";
 import "./styles.css";
 
 interface IProps {
   initValues: {
     aboutText: string;
-    selectedProfileImg: string;
-    uploadedImgs: Array<string>;
+    selectedProfileImg?: IImage;
+    uploadedImgs: Array<IImage>;
   };
   setInitValues: Dispatch<
     SetStateAction<{
       aboutText: string;
-      selectedProfileImg: string;
-      uploadedImgs: string[];
+      selectedProfileImg?: IImage;
+      uploadedImgs: IImage[];
     }>
   >;
 }
-/**
- *
- * Dispatch<SetStateAction<{ aboutText: string;
- *  selectedProfileImg: string;
- *  uploadedImgs: string[];
- *  }>>
- */
 
 export const FileUploader: React.FC<IProps> = ({
   initValues,
@@ -49,17 +43,21 @@ export const FileUploader: React.FC<IProps> = ({
 
     uploadImg(data).then(
       (response) => {
-        const { uploadedImgs, selectedProfileImg }: IWebsite =
-          response.updatedWebsite;
+        const { uploadedImgs, selectedProfileImg } = response.updatedWebsite;
         setMessage("");
         setLoading(false);
+
+        console.log("uploadedImgs", uploadedImgs);
+        console.log("selectedProfileImg", selectedProfileImg);
+
+        const newArray = [selectedProfileImg].concat(initValues.uploadedImgs);
         // TODO
         // 1. Fix this
-        // setInitValues({
-        //   ...initValues,
-        //   selectedProfileImg: selectedProfileImg || "",
-        //   uploadedImgs: uploadedImgs || [],
-        // });
+        setInitValues({
+          ...initValues,
+          selectedProfileImg: selectedProfileImg,
+          uploadedImgs: newArray,
+        });
       },
       (error) => {
         const resMessage =

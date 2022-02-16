@@ -44,7 +44,7 @@ export const removeImg = (deleteImg: string) => {
     });
 };
 
-export const chooseImg = (selectedImg: string) => {
+export const chooseImg = (selectedImg) => {
   return axios
     .put(API_URL + "/api/website/uploaded/images/" + selectedImg)
     .then((response) => {

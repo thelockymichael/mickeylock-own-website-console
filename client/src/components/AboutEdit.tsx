@@ -130,20 +130,22 @@ const About: React.FC<{}> = () => {
     );
   };
 
-  const selectImage = (selectedProfileImg) => {
-    console.log("selectedImg", selectedProfileImg);
+  const selectImage = (selectedImage) => {
+    const { id } = selectedImage;
 
-    chooseImg(selectedProfileImg).then(
+    chooseImg(id).then(
       (response) => {
         setLoading(false);
 
         const { updatedWebsite } = response;
 
-        console.log("updatedWebsite", updatedWebsite);
+        const selectedProfileImg = initValues.uploadedImgs.find(
+          (item) => item.id === updatedWebsite.selectedProfileImg
+        );
 
         setInitValues({
           ...initValues,
-          selectedProfileImg: updatedWebsite.selectedProfileImg,
+          selectedProfileImg: selectedProfileImg,
         });
       },
       (error) => {
@@ -238,8 +240,7 @@ const About: React.FC<{}> = () => {
               )}
             </Form>
           </Formik>
-          {/* <FileUploader initValues={initValues} setInitValues={setInitValues} /> */}
-          {/* <button onClick={toggle}>Open modal</button> */}
+          <FileUploader initValues={initValues} setInitValues={setInitValues} />
           <div className="card-columns">
             {hasUploadedImgs &&
               initValues.uploadedImgs.map((itemImg) => {
@@ -254,7 +255,7 @@ const About: React.FC<{}> = () => {
                   <div
                     key={id}
                     className={
-                      initValues.selectedProfileImg === itemImg
+                      initValues.selectedProfileImg?.id === itemImg.id
                         ? "card selected-card"
                         : "card"
                     }
@@ -268,10 +269,10 @@ const About: React.FC<{}> = () => {
                     <div className="form-group">
                       <p>{name}</p>
                       <button
-                        onClick={() => selectImage(name)}
+                        onClick={() => selectImage(itemImg)}
                         className="btn btn-primary btn-block"
                         disabled={
-                          initValues.selectedProfileImg?.name === name
+                          initValues.selectedProfileImg?.id === itemImg.id
                             ? true
                             : false
                         }
