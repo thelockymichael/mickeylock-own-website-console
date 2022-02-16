@@ -1,3 +1,4 @@
+import IImage from "./image";
 import IProject from "./project.type";
 
 export default interface IWebsite {
@@ -5,7 +6,7 @@ export default interface IWebsite {
   name?: string;
   descText?: string;
   aboutText?: string;
-  uploadedImgs?: Array<string>;
-  selectedProfileImg?: string;
+  uploadedImgs?: Array<IImage>;
+  selectedProfileImg?: IImage;
   projects?: Array<IProject>;
 }

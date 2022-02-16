@@ -53,11 +53,13 @@ export const FileUploader: React.FC<IProps> = ({
           response.updatedWebsite;
         setMessage("");
         setLoading(false);
-        setInitValues({
-          ...initValues,
-          selectedProfileImg: selectedProfileImg || "",
-          uploadedImgs: uploadedImgs || [],
-        });
+        // TODO
+        // 1. Fix this
+        // setInitValues({
+        //   ...initValues,
+        //   selectedProfileImg: selectedProfileImg || "",
+        //   uploadedImgs: uploadedImgs || [],
+        // });
       },
       (error) => {
         const resMessage =
