@@ -17,7 +17,7 @@ import { useModal } from "../hooks/useModal";
 import { Modal } from "./AlertModal";
 import { ConfirmationModal } from "./AlertModal/confirmation-modal";
 import { WebsiteContext } from "../contexts/website";
-import IImage from "../types/image";
+import IImage from "../types/image.type";
 import { getCurrentUser } from "../services/auth.service";
 
 const About: React.FC<{}> = () => {

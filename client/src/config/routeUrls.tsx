@@ -5,5 +5,6 @@ export default {
   dashboardPath: "/dashboard",
   homeEdit: "/dashboard/home",
   aboutEdit: "/dashboard/about",
+  projectsEdit: "/dashboard/projects",
   pageNotFoundPath: "/*",
 };

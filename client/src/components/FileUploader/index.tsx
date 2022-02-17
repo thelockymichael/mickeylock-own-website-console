@@ -1,6 +1,6 @@
 import React, { SetStateAction, Dispatch, useState } from "react";
 import { uploadImg } from "../../services/editWebsite.service";
-import IImage from "../../types/image";
+import IImage from "../../types/image.type";
 import IWebsite from "../../types/website.type";
 import "./styles.css";
 
@@ -30,7 +30,6 @@ export const FileUploader: React.FC<IProps> = ({
   const [message, setMessage] = useState<string>("");
 
   const onInputChange = (e) => {
-    console.log(e.target.files[0]);
     setFile(e.target.files[0]);
   };
 

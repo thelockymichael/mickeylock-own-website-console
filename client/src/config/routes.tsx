@@ -9,6 +9,7 @@ import HomeEdit from "../components/HomeEdit";
 import HomePage from "../components/HomePage";
 import Login from "../components/Login";
 import NotFound from "../components/NotFound";
+import ProjectsEdit from "../components/ProjectsEdit";
 // Paths
 import paths from "./routeUrls";
 
@@ -43,6 +44,12 @@ const routes = [
     path: paths.aboutEdit,
     exact: true,
     component: AboutEdit,
+    isPrivate: true,
+  },
+  {
+    path: paths.projectsEdit,
+    exact: true,
+    component: ProjectsEdit,
     isPrivate: true,
   },
   {

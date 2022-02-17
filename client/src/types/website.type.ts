@@ -1,4 +1,4 @@
-import IImage from "./image";
+import IImage from "./image.type";
 import IProject from "./project.type";
 
 export default interface IWebsite {

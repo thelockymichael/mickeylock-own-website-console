@@ -1,3 +1,4 @@
+import IImage from "./image.type";
 import IUser from "./user.type";
 
 export default interface IProject {
@@ -6,7 +7,7 @@ export default interface IProject {
   description: string;
   tags?: string[];
   gitHubLink?: string;
-  imageUrl?: string;
+  image?: IImage;
   date?: Date;
   user: IUser;
 }

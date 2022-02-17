@@ -1,6 +1,6 @@
 import axios from "axios";
 import config from "../config/config";
-import IImage from "../types/image";
+import IImage from "../types/image.type";
 import IWebsite from "../types/website.type";
 
 const API_URL = config.WEBSITE_API;
