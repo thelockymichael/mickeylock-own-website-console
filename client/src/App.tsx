@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Switch, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
+// import "./App.css";
 
 import * as AuthService from "./services/auth.service";
 import { BrowserRouter } from "react-router-dom";

@@ -5,6 +5,8 @@ import * as Yup from "yup";
 import { login } from "../services/auth.service";
 import { RouteComponentProps } from "react-router-dom";
 
+import "./card.style.css";
+
 interface RouterProps {
   history: string;
 }

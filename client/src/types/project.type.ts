@@ -1,13 +1,28 @@
 import IImage from "./image.type";
 import IUser from "./user.type";
 
+interface tempImage {
+  img?: string;
+}
+
 export default interface IProject {
-  _id?: string;
+  id?: string;
   name: string;
   description: string;
-  tags?: string[];
+  tags?: Array<string>;
   gitHubLink?: string;
   image?: IImage;
   date?: Date;
-  user: IUser;
 }
+
+/**
+ *   id?: string;
+  name: string;
+  img?: {
+    type: string;
+    data: Array<number>;
+  };
+  imgType?: string;
+}
+
+ */

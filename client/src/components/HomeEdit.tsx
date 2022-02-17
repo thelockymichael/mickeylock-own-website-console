@@ -10,6 +10,8 @@ import Sidebar from "./Sidebar";
 import { WebsiteContext } from "../contexts/website";
 import { getCurrentUser } from "../services/auth.service";
 
+import "./card.style.css";
+
 const HomeEdit: React.FC<{}> = () => {
   const { website } = useContext(WebsiteContext);
   const currentUser = getCurrentUser();
