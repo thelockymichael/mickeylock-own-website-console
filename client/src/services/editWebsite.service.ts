@@ -59,11 +59,15 @@ export const removeImg = (deleteImg: string, authToken: string) => {
 
 export const chooseImg = (selectedImg: string, authToken: string) => {
   return axios
-    .put(API_URL + "/api/website/uploaded/images/" + selectedImg, {
-      headers: {
-        Authorization: "bearer " + authToken,
-      },
-    })
+    .put(
+      API_URL + "/api/website/uploaded/images/" + selectedImg,
+      {},
+      {
+        headers: {
+          Authorization: "bearer " + authToken,
+        },
+      }
+    )
     .then((response) => {
       console.log("response.data", response.data);
 
