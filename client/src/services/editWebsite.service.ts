@@ -1,5 +1,6 @@
 import axios from "axios";
 import config from "../config/config";
+import IImage from "../types/image";
 import IWebsite from "../types/website.type";
 
 const API_URL = config.WEBSITE_API;
@@ -20,12 +21,34 @@ export const initWebsite = () => {
 };
 
 // EDIT WEBSITE
-export const editWebsite = (formValues: IWebsite) => {
+export const editWebsite = (formValues: IWebsite, authToken: string) => {
   console.log("formValues", formValues);
 
   return axios
-    .put(API_URL + "/api/website/", {
-      ...formValues,
+    .put(
+      API_URL + "/api/website/",
+      {
+        ...formValues,
+      },
+      {
+        headers: {
+          Authorization: "bearer " + authToken,
+        },
+      }
+    )
+    .then((response) => {
+      console.log("response.data", response.data);
+
+      return response.data;
+    });
+};
+
+export const removeImg = (deleteImg: string, authToken: string) => {
+  return axios
+    .delete(API_URL + "/api/website/uploaded/images/" + deleteImg, {
+      headers: {
+        Authorization: "bearer " + authToken,
+      },
     })
     .then((response) => {
       console.log("response.data", response.data);
@@ -34,9 +57,13 @@ export const editWebsite = (formValues: IWebsite) => {
     });
 };
 
-export const removeImg = (deleteImg: string) => {
+export const chooseImg = (selectedImg: string, authToken: string) => {
   return axios
-    .delete(API_URL + "/api/website/uploaded/images/" + deleteImg)
+    .put(API_URL + "/api/website/uploaded/images/" + selectedImg, {
+      headers: {
+        Authorization: "bearer " + authToken,
+      },
+    })
     .then((response) => {
       console.log("response.data", response.data);
 
@@ -44,20 +71,16 @@ export const removeImg = (deleteImg: string) => {
     });
 };
 
-export const chooseImg = (selectedImg) => {
+export const uploadImg = (data: FormData, authToken: string) => {
   return axios
-    .put(API_URL + "/api/website/uploaded/images/" + selectedImg)
+    .put(API_URL + "/api/website/", data, {
+      headers: {
+        Authorization: "bearer " + authToken,
+      },
+    })
     .then((response) => {
       console.log("response.data", response.data);
 
       return response.data;
     });
-};
-
-export const uploadImg = (data: FormData) => {
-  return axios.put(API_URL + "/api/website/", data).then((response) => {
-    console.log("response.data", response.data);
-
-    return response.data;
-  });
 };

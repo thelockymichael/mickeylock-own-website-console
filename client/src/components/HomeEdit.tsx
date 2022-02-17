@@ -8,9 +8,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import Sidebar from "./Sidebar";
 import { WebsiteContext } from "../contexts/website";
+import { getCurrentUser } from "../services/auth.service";
 
 const HomeEdit: React.FC<{}> = () => {
   const { website } = useContext(WebsiteContext);
+  const currentUser = getCurrentUser();
 
   console.log("website", website);
 
@@ -29,7 +31,7 @@ const HomeEdit: React.FC<{}> = () => {
     setMessage("");
     setLoading(true);
 
-    editWebsite(formValues).then(
+    editWebsite(formValues, currentUser!!.authToken).then(
       () => {
         setLoading(false);
       },

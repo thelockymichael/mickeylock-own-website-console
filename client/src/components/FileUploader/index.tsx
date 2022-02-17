@@ -5,6 +5,7 @@ import IWebsite from "../../types/website.type";
 import "./styles.css";
 
 interface IProps {
+  authToken: string;
   initValues: {
     aboutText: string;
     selectedProfileImg?: IImage;
@@ -22,6 +23,7 @@ interface IProps {
 export const FileUploader: React.FC<IProps> = ({
   initValues,
   setInitValues,
+  authToken,
 }) => {
   const [file, setFile] = useState<Blob | string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -41,7 +43,7 @@ export const FileUploader: React.FC<IProps> = ({
 
     data.append("selectedProfileImg", file);
 
-    uploadImg(data).then(
+    uploadImg(data, authToken).then(
       (response) => {
         const { uploadedImgs, selectedProfileImg } = response.updatedWebsite;
         setMessage("");

@@ -18,9 +18,10 @@ import { Modal } from "./AlertModal";
 import { ConfirmationModal } from "./AlertModal/confirmation-modal";
 import { WebsiteContext } from "../contexts/website";
 import IImage from "../types/image";
+import { getCurrentUser } from "../services/auth.service";
 
 const About: React.FC<{}> = () => {
-  // const {website} = useContext(WebsiteContext)
+  const currentUser = getCurrentUser();
 
   const [sidebarClass, toggleSidebarClass] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -35,16 +36,11 @@ const About: React.FC<{}> = () => {
     uploadedImgs: [],
   });
 
-  //console.log(config.WEBSITE_API + "/thumbnails/" + initValues.uploadedImgs[1]);
-
-  const sendForm = (formValues: {
-    aboutText: string;
-    // selectedProfileImg: string;
-  }) => {
+  const sendForm = (formValues: { aboutText: string }) => {
     setMessage("");
     setLoading(true);
 
-    editWebsite(formValues).then(
+    editWebsite(formValues, currentUser!!.authToken).then(
       () => {
         setLoading(false);
       },
@@ -65,8 +61,6 @@ const About: React.FC<{}> = () => {
   const validationSchema = Yup.object().shape({
     aboutText: Yup.string().required("This field is required!"),
   });
-
-  const [source, setSource] = useState<string>("");
 
   useEffect(() => {
     const getInitValues = async () => {
@@ -103,7 +97,7 @@ const About: React.FC<{}> = () => {
   const deleteImage = (deleteImg: string) => {
     console.log("removeImage", deleteImg);
 
-    removeImg(deleteImg).then(
+    removeImg(deleteImg, currentUser!!.authToken).then(
       (response) => {
         setLoading(false);
 
@@ -133,7 +127,7 @@ const About: React.FC<{}> = () => {
   const selectImage = (selectedImage) => {
     const { id } = selectedImage;
 
-    chooseImg(id).then(
+    chooseImg(id, currentUser!!.authToken).then(
       (response) => {
         setLoading(false);
 
@@ -240,7 +234,11 @@ const About: React.FC<{}> = () => {
               )}
             </Form>
           </Formik>
-          <FileUploader initValues={initValues} setInitValues={setInitValues} />
+          <FileUploader
+            authToken={currentUser!!.authToken}
+            initValues={initValues}
+            setInitValues={setInitValues}
+          />
           <div className="card-columns">
             {hasUploadedImgs &&
               initValues.uploadedImgs.map((itemImg) => {

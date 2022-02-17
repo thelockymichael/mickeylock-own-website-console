@@ -9,6 +9,8 @@ const Dashboard: React.FC = () => {
 
   const currentUser = getCurrentUser();
 
+  console.log("currentUser", currentUser);
+
   return (
     <div className="wrapper">
       <Sidebar sidebarClass={sidebarClass} />
