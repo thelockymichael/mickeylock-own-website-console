@@ -19,8 +19,6 @@ import IImage from "../types/image.type";
 import { getCurrentUser } from "../services/auth.service";
 import IProject from "../types/project.type";
 
-import { dummyProjects } from "./dummy-projects";
-
 // Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -31,36 +29,49 @@ import {
 
 // Route
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { getProjects } from "../services/projects.service";
+import {
+  createProject,
+  getProjects,
+  removeImage,
+  removeProject,
+} from "../services/projects.service";
 // import { ProjectItem } from "../components";
 
 const ProjectsEdit: React.FC<{}> = () => {
-  const currentUser = getCurrentUser();
+  const { isShown, selectedItem, toggle } = useModal();
+
+  const onConfirm = () => {
+    deleteProject(selectedItem);
+    toggle();
+  };
+  const onCancel = () => {
+    toggle();
+  };
 
   const [sidebarClass, toggleSidebarClass] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
+  const [file, setFile] = useState<Blob | string>("");
   const [initValues, setInitValues] = useState<{
-    projects?: Array<IProject>;
+    projects: Array<IProject>;
     projectForm: {
       name: string;
       description: string;
       gitHubLink: string;
+      tags: Array<string>;
+      date: Date;
     };
-
-    // selectedProfileImg?: IImage;
-    // uploadedImgs: Array<IImage>;
+    selectedProfileImg?: IImage;
   }>({
-    projects: dummyProjects,
+    projects: [],
     projectForm: {
       name: "",
       description: "",
-      // tags: [],
+      tags: [],
       gitHubLink: "",
-      // date: new Date(),
+      date: new Date(),
     },
-    // selectedProfileImg: undefined,
-    // uploadedImgs: [],
+    selectedProfileImg: undefined,
   });
 
   const sendForm = (formValues) => {
@@ -68,42 +79,68 @@ const ProjectsEdit: React.FC<{}> = () => {
     setLoading(true);
 
     console.log("sendForm");
+    console.log("formValues", formValues);
 
-    // editWebsite(formValues, currentUser!!.authToken).then(
-    //   () => {
-    //     setLoading(false);
-    //   },
-    //   (error) => {
-    //     const resMessage =
-    //       (error.response &&
-    //         error.response.data &&
-    //         error.response.data.message) ||
-    //       error.message ||
-    //       error.toString();
+    // Convert tags into array
+    const convertedArr = JSON.parse(formValues.tags);
+    const newProject = {
+      ...formValues,
+      tags: convertedArr,
+    };
+    const data = new FormData();
+    data.append("image", file);
 
-    //     setLoading(false);
-    //     setMessage(resMessage);
-    //   }
-    // );
+    // Append all JSON values to FormData
+    for (const key in newProject) {
+      if (key === "tags") {
+        var jsonArr = JSON.stringify(newProject[key]);
+
+        data.append(key, jsonArr);
+      } else {
+        data.append(key, newProject[key]);
+      }
+    }
+
+    console.log("dataForm", data);
+
+    createProject(data).then(
+      (response) => {
+        setLoading(false);
+
+        const { newProject } = response;
+
+        setInitValues({
+          ...initValues,
+          projects: [newProject].concat(initValues.projects),
+        });
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        setLoading(false);
+        setMessage(resMessage);
+      }
+    );
   };
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("This field is required!"),
     description: Yup.string().required("This field is required!"),
     gitHubLink: Yup.string().required("This field is required!"),
-
-    // tags: Yup.string().required("This field is required!"),
-    // date: Yup.string().required("This field is required!"),
+    tags: Yup.array().required("This field is required!"),
+    date: Yup.date().required("This field is required!"),
   });
 
   useEffect(() => {
     const getInitValues = async () => {
       const { data } = await getProjects();
 
-      console.log("data initValues", data[0].name);
-      console.log("data tags values", data[0].tags);
-
-      console.log("uploadedImages", data);
+      console.log("projects", data);
       setInitValues({
         ...initValues,
         projects: data,
@@ -113,15 +150,71 @@ const ProjectsEdit: React.FC<{}> = () => {
     getInitValues();
   }, []);
 
-  // const hasprojects = initValues.uploadedImgs ? true : false;
-
   // TODO
   // 1. [X] Dummy data
-  // 2. CREATE BACKEND FOR PROJECT, TEST WITH POSTMAN !!!
-  // 3. Create form for data
-  //    (name, description, tags, gitHubLink, date)
-  // 4. Image form
-  // 5. Send all date at once to backend
+  // 2. [X] SEND ALL DATA AT ONE
+  // 3. [X] Remove a PROJECT
+  //    3.1. Display modal
+  //    3.2. Create remove FUNC
+  // 4. [ ] EDIT project
+
+  const deleteProject = (projectToRemove: IProject) => {
+    removeProject(projectToRemove).then(
+      (response) => {
+        setLoading(false);
+
+        const deletedProject: IProject = response.deletedProject;
+
+        const updatedProjects = initValues.projects.filter(
+          (item) => item.id !== deletedProject.id
+        );
+
+        setInitValues({
+          ...initValues,
+          projects: updatedProjects,
+        });
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        setLoading(false);
+        setMessage(resMessage);
+      }
+    );
+
+    if (projectToRemove.image) {
+      removeImage(projectToRemove.image).then(
+        (response) => {
+          setLoading(false);
+
+          // const updatedImgs = initValues.uploadedImgs.filter(
+          //   (item) => item.id !== deleteImg
+          // );
+
+          // setInitValues({
+          //   ...initValues,
+          //   uploadedImgs: updatedImgs,
+          // });
+        },
+        (error) => {
+          const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+
+          setLoading(false);
+          setMessage(resMessage);
+        }
+      );
+    }
+  };
 
   return (
     <div className="wrapper">
@@ -172,20 +265,15 @@ const ProjectsEdit: React.FC<{}> = () => {
                   className="alert alert-danger"
                 />
               </div>
-              {/* <div className="form-group">
+              <div className="form-group">
                 <label htmlFor="Tags">Tags</label>
-                <Field
-                  component="text"
-                  name="tags"
-                  type="text"
-                  className="form-control"
-                />
+                <Field name="tags" type="text" className="form-control" />
                 <ErrorMessage
                   name="tags"
                   component="div"
                   className="alert alert-danger"
                 />
-              </div> */}
+              </div>
               <div className="form-group">
                 <label htmlFor="Github link">GitHub Link</label>
                 <Field name="gitHubLink" type="text" className="form-control" />
@@ -195,13 +283,13 @@ const ProjectsEdit: React.FC<{}> = () => {
                   className="alert alert-danger"
                 />
               </div>
-              {/* <div className="form-group">
-                <label htmlFor="Date">Date</label>
+              <div className="form-group">
+                <label htmlFor="Date">When was the project created?</label>
+
                 <Field
-                  component="text"
                   rows="4"
                   name="date"
-                  type="text"
+                  type="date"
                   className="form-control"
                 />
                 <ErrorMessage
@@ -209,7 +297,29 @@ const ProjectsEdit: React.FC<{}> = () => {
                   component="div"
                   className="alert alert-danger"
                 />
-              </div> */}
+              </div>
+              <div className="form-group">
+                <label htmlFor="Upload file">Upload file</label>
+
+                <Field
+                  name="file"
+                  type="file"
+                  className="form-control"
+                  onChange={(event) => {
+                    console.log("file", event.target.files[0]);
+                    setFile(event.target.files[0]);
+                    // setInitValues({
+                    //   ...initValues,
+                    //   selectedProfileImg: event.currentTarget,
+                    // });
+                  }}
+                />
+                <ErrorMessage
+                  name="date"
+                  component="div"
+                  className="alert alert-danger"
+                />
+              </div>
               <div className="form-group">
                 <button
                   type="submit"
@@ -232,13 +342,6 @@ const ProjectsEdit: React.FC<{}> = () => {
               )}
             </Form>
           </Formik>
-          {/* <FileUploader
-            authToken={currentUser!!.authToken}
-            initValues={initValues}
-            setInitValues={setInitValues}
-          /> */}
-          {/* {initValues.projects?.map((item) => ( */}
-
           <div className="row">
             {initValues.projects?.map((item) => {
               let src: IImage | string;
@@ -255,13 +358,9 @@ const ProjectsEdit: React.FC<{}> = () => {
               return (
                 <div key={item.id} className="col-lg-4 col-sm-6 mb-4">
                   <div style={{ padding: 0 }} className="card">
-                    <a href="#">
-                      <img className="card-img-top" src={src} alt="" />
-                    </a>
+                    <img className="card-img-top" src={src} alt="" />
                     <div className="card-body">
-                      <h4 className="card-title">
-                        <a href="#">{item.name}</a>
-                      </h4>
+                      <h4 className="card-title">{item.name}</h4>
                       <p className="card-text">{item.description}</p>
 
                       <a href={item.gitHubLink} className="btn btn-primary">
@@ -272,6 +371,12 @@ const ProjectsEdit: React.FC<{}> = () => {
                         />
                         GitHub
                       </a>
+                      <button
+                        onClick={() => toggle(item)}
+                        className="btn btn-danger btn-block"
+                      >
+                        Remove
+                      </button>
                     </div>
                     <div
                       style={{
@@ -303,6 +408,18 @@ const ProjectsEdit: React.FC<{}> = () => {
           </div>
         </div>
       </div>
+      <Modal
+        headerText="Delete profile image?"
+        isShown={isShown}
+        hide={toggle}
+        modalContent={
+          <ConfirmationModal
+            onConfirm={onConfirm}
+            onCancel={onCancel}
+            message="Are you sure you want to delete selected profile image?"
+          />
+        }
+      />
     </div>
   );
 };
