@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Field, Form, ErrorMessage, setIn } from "formik";
+import moment from "moment";
 import * as Yup from "yup";
 import {
   editWebsite,
@@ -31,6 +32,7 @@ import {
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import {
   createProject,
+  editCreatedProject,
   getProjects,
   removeImage,
   removeProject,
@@ -38,8 +40,51 @@ import {
 // import { ProjectItem } from "../components";
 
 const ProjectsEdit: React.FC<{}> = () => {
+  const currentUser = getCurrentUser();
+
   const { isShown, selectedItem, toggle } = useModal();
 
+  // Edit Project form
+  const [editMode, setEditMode] = useState<IProject | undefined>(undefined);
+
+  const editProject = (project: IProject) => {
+    const { name, description, gitHubLink, date, tags, image, id } = project;
+
+    // Empty FILE state
+    // setFile("");
+    // console.log("edit tags", `das ${tags}`);
+    // console.log("edit tags", `das ${JSON.stringify(tags)}`);
+
+    console.log("date", date);
+    console.log("moment date", moment().format("MM.DD.yyyy"));
+    // moment().format("yyyy-MM-DD"),
+
+    console.log(moment(date).format("yyyy-MM-DD"));
+
+    setInitValues({
+      ...initValues,
+      projectForm: {
+        id,
+        name,
+        description,
+        gitHubLink: gitHubLink || "",
+        date: date
+          ? moment(date).format("yyyy-MM-DD")
+          : moment().format("MM.DD.yyyy"),
+        tags: JSON.stringify(tags),
+      },
+    });
+
+    // if (image?.img) {
+    //   const json = JSON.stringify({ blob: image?.img.data.toString() });
+
+    //   // console.log("ASD-123", json);
+
+    //   setFile(json);
+    // }
+    setEditMode(project);
+  };
+  // For project removal
   const onConfirm = () => {
     deleteProject(selectedItem);
     toggle();
@@ -55,11 +100,12 @@ const ProjectsEdit: React.FC<{}> = () => {
   const [initValues, setInitValues] = useState<{
     projects: Array<IProject>;
     projectForm: {
+      id?: string;
       name: string;
       description: string;
       gitHubLink: string;
-      tags: Array<string>;
-      date: Date;
+      tags: Array<string> | string;
+      date: string;
     };
     selectedProfileImg?: IImage;
   }>({
@@ -69,12 +115,89 @@ const ProjectsEdit: React.FC<{}> = () => {
       description: "",
       tags: [],
       gitHubLink: "",
-      date: new Date(),
+      date: moment().format("yyyy-MM-DD"),
     },
     selectedProfileImg: undefined,
   });
 
   const sendForm = (formValues) => {
+    if (editMode) {
+      // TODO
+      // 1. Create editMode method
+
+      sendEditedProject(formValues);
+
+      console.log("I AM EDITING PROJECT");
+    } else {
+      sendNewProject(formValues);
+    }
+  };
+
+  const sendEditedProject = (project) => {
+    setMessage("");
+    setLoading(true);
+
+    console.log("sendForm");
+    console.log("formValues", project);
+
+    // Convert tags into array
+
+    const data = new FormData();
+    data.append("image", file);
+
+    // Append all JSON values to FormData
+    for (const key in project) {
+      // if (key === "tags") {
+      //   var jsonArr = JSON.stringify(project[key]);
+
+      //   data.append(key, jsonArr);
+      // } else {
+      data.append(key, project[key]);
+      // }
+    }
+
+    console.log("dataForm", data);
+
+    editCreatedProject(data, currentUser!!.authToken).then(
+      (response) => {
+        setLoading(false);
+
+        const { updatedProject } = response;
+
+        console.log("edit project", updatedProject);
+
+        // TODO
+        // Edit properties of selected project
+        // Find
+        const { projects } = initValues;
+        const projectIndex = projects.findIndex(
+          (item) => item.id === updatedProject.id
+        );
+
+        const updatedProjects = projects.map((obj, index) => {
+          return index === projectIndex ? updatedProject : obj;
+        });
+
+        setInitValues({
+          ...initValues,
+          projects: updatedProjects,
+        });
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        setLoading(false);
+        setMessage(resMessage);
+      }
+    );
+  };
+
+  const sendNewProject = (formValues) => {
     setMessage("");
     setLoading(true);
 
@@ -103,7 +226,7 @@ const ProjectsEdit: React.FC<{}> = () => {
 
     console.log("dataForm", data);
 
-    createProject(data).then(
+    createProject(data, currentUser!!.authToken).then(
       (response) => {
         setLoading(false);
 
@@ -159,7 +282,7 @@ const ProjectsEdit: React.FC<{}> = () => {
   // 4. [ ] EDIT project
 
   const deleteProject = (projectToRemove: IProject) => {
-    removeProject(projectToRemove).then(
+    removeProject(projectToRemove, currentUser!!.authToken).then(
       (response) => {
         setLoading(false);
 
@@ -188,7 +311,7 @@ const ProjectsEdit: React.FC<{}> = () => {
     );
 
     if (projectToRemove.image) {
-      removeImage(projectToRemove.image).then(
+      removeImage(projectToRemove.image, currentUser!!.authToken).then(
         (response) => {
           setLoading(false);
 
@@ -232,7 +355,9 @@ const ProjectsEdit: React.FC<{}> = () => {
             >
               <FontAwesomeIcon size="4x" color="#FFF" icon={faBars} />
             </button>
-            <h3>Projects Edit</h3>
+            <h3>
+              Projects <b>{editMode ? "Edit" : "Add"} </b>
+            </h3>
           </header>
           <Formik
             enableReinitialize
@@ -266,7 +391,9 @@ const ProjectsEdit: React.FC<{}> = () => {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="Tags">Tags</label>
+                <label htmlFor="Tags">
+                  Tags (e.g. ["React Native", "TypeScript"])
+                </label>
                 <Field name="tags" type="text" className="form-control" />
                 <ErrorMessage
                   name="tags"
@@ -306,16 +433,11 @@ const ProjectsEdit: React.FC<{}> = () => {
                   type="file"
                   className="form-control"
                   onChange={(event) => {
-                    console.log("file", event.target.files[0]);
                     setFile(event.target.files[0]);
-                    // setInitValues({
-                    //   ...initValues,
-                    //   selectedProfileImg: event.currentTarget,
-                    // });
                   }}
                 />
                 <ErrorMessage
-                  name="date"
+                  name="file"
                   component="div"
                   className="alert alert-danger"
                 />
@@ -346,7 +468,7 @@ const ProjectsEdit: React.FC<{}> = () => {
             {initValues.projects?.map((item) => {
               let src: IImage | string;
               let dataBase64;
-              if (item.image) {
+              if (item?.image) {
                 const { imgType, img } = item.image;
                 if (img) dataBase64 = img.data;
                 const data = Buffer.from(dataBase64).toString("base64");
@@ -377,12 +499,21 @@ const ProjectsEdit: React.FC<{}> = () => {
                       >
                         Remove
                       </button>
+
+                      <button
+                        onClick={() => editProject(item)}
+                        className="btn btn-primary btn-block"
+                      >
+                        Edit
+                      </button>
                     </div>
                     <div
                       style={{
                         display: "flex",
-                        padding: "0.4rem 0.0rem",
+                        padding: "0.0rem",
                         flexDirection: "row",
+                        flexWrap: "wrap",
+                        paddingTop: "0.4rem",
                       }}
                       className="card-footer"
                     >
@@ -393,7 +524,7 @@ const ProjectsEdit: React.FC<{}> = () => {
                             padding: "0.5rem",
                             backgroundColor: "rgb(80, 34, 116)",
                             color: "#FFF",
-                            marginLeft: "0.5rem",
+                            margin: "0.0rem 0.0rem 0.4em 0.4rem",
                             borderRadius: "8px",
                           }}
                         >

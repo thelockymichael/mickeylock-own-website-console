@@ -13,7 +13,7 @@ export const getProjects = async () => {
   return axios.get(API_URL + "/api/website/projects");
 };
 
-export const createProject = async (data: FormData, authToken?: string) => {
+export const createProject = async (data: FormData, authToken: string) => {
   return axios
     .post(API_URL + "/api/website/projects", data)
     .then((response) => {
@@ -23,9 +23,25 @@ export const createProject = async (data: FormData, authToken?: string) => {
     });
 };
 
+export const editCreatedProject = (data: FormData, authToken: string) => {
+  console.log("formValues", data);
+
+  return axios
+    .put(API_URL + "/api/website/projects", data, {
+      headers: {
+        Authorization: "bearer " + authToken,
+      },
+    })
+    .then((response) => {
+      console.log("response.data", response.data);
+
+      return response.data;
+    });
+};
+
 export const removeProject = async (
   projectToRemove: IProject,
-  authToken?: string
+  authToken: string
 ) => {
   return axios
     .delete(API_URL + "/api/website/projects/" + projectToRemove.id, {
@@ -40,7 +56,7 @@ export const removeProject = async (
     });
 };
 
-export const removeImage = async (image: IImage, authToken?: string) => {
+export const removeImage = async (image: IImage, authToken: string) => {
   return axios
     .delete(API_URL + "/api/website/projects/images/" + image?.id, {
       headers: {
@@ -53,80 +69,3 @@ export const removeImage = async (image: IImage, authToken?: string) => {
       return response.data;
     });
 };
-
-// export const initWebsite = () => {
-//   return axios.post(API_URL + "/api/website").then((response) => {
-//     console.log("response.data", response.data);
-
-//     return response.data;
-//   });
-// };
-
-// EDIT WEBSITE
-// export const editWebsite = (formValues: IWebsite, authToken: string) => {
-//   console.log("formValues", formValues);
-
-//   return axios
-//     .put(
-//       API_URL + "/api/website/",
-//       {
-//         ...formValues,
-//       },
-//       {
-//         headers: {
-//           Authorization: "bearer " + authToken,
-//         },
-//       }
-//     )
-//     .then((response) => {
-//       console.log("response.data", response.data);
-
-//       return response.data;
-//     });
-// };
-
-// export const removeImg = (deleteImg: string, authToken: string) => {
-//   return axios
-//     .delete(API_URL + "/api/website/uploaded/images/" + deleteImg, {
-//       headers: {
-//         Authorization: "bearer " + authToken,
-//       },
-//     })
-//     .then((response) => {
-//       console.log("response.data", response.data);
-
-//       return response.data;
-//     });
-// };
-
-// export const chooseImg = (selectedImg: string, authToken: string) => {
-//   return axios
-//     .put(
-//       API_URL + "/api/website/uploaded/images/" + selectedImg,
-//       {},
-//       {
-//         headers: {
-//           Authorization: "bearer " + authToken,
-//         },
-//       }
-//     )
-//     .then((response) => {
-//       console.log("response.data", response.data);
-
-//       return response.data;
-//     });
-// };
-
-// export const uploadImg = (data: FormData, authToken: string) => {
-//   return axios
-//     .put(API_URL + "/api/website/", data, {
-//       headers: {
-//         Authorization: "bearer " + authToken,
-//       },
-//     })
-//     .then((response) => {
-//       console.log("response.data", response.data);
-
-//       return response.data;
-//     });
-// };

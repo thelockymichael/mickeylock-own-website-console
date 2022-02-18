@@ -9,45 +9,45 @@ import image3 from "./background_03.jpeg";
 // Look for suitable images
 // Step 1. Replace img with URL string
 
-export const dummyProjects: Array<IProject> = [
-  {
-    id: "1",
-    name: "Testi 1",
-    description: "Paras desc 1",
-    tags: ["React", "NodeJS"],
-    gitHubLink: "https://google.com",
-    // image:
-    //   "https://img.freepik.com/free-photo/abstract-grunge-decorative-relief-navy-blue-stucco-wall-texture-wide-angle-rough-colored-background_1258-28311.jpg?size=626&ext=jpg",
-    date: new Date(),
-  },
-  {
-    id: "2",
-    name: "Testi 1",
-    description: "Paras desc 1",
-    tags: ["React", "NodeJS"],
-    gitHubLink: "https://google.com",
-    // image:
-    //   "https://img.freepik.com/free-photo/abstract-grunge-decorative-relief-navy-blue-stucco-wall-texture-wide-angle-rough-colored-background_1258-28311.jpg?size=626&ext=jpg",
-    date: new Date(),
-  },
-  {
-    id: "3",
-    name: "Testi 1",
-    description: "Paras desc 1",
-    tags: ["React", "NodeJS"],
-    gitHubLink: "https://google.com",
-    // image:
-    //   "https://img.freepik.com/free-photo/abstract-grunge-decorative-relief-navy-blue-stucco-wall-texture-wide-angle-rough-colored-background_1258-28311.jpg?size=626&ext=jpg",
-    date: new Date(),
-  },
-  {
-    id: "4",
-    name: "Testi 1",
-    description: "Paras desc 1",
-    tags: ["React", "NodeJS"],
-    gitHubLink: "https://google.com",
-    // image:
-    //   "https://img.freepik.com/free-photo/abstract-grunge-decorative-relief-navy-blue-stucco-wall-texture-wide-angle-rough-colored-background_1258-28311.jpg?size=626&ext=jpg",
-    date: new Date(),
-  },
-];
+// export const dummyProjects: Array<IProject> = [
+//   {
+//     id: "1",
+//     name: "Testi 1",
+//     description: "Paras desc 1",
+//     tags: ["React", "NodeJS"],
+//     gitHubLink: "https://google.com",
+//     // image:
+//     //   "https://img.freepik.com/free-photo/abstract-grunge-decorative-relief-navy-blue-stucco-wall-texture-wide-angle-rough-colored-background_1258-28311.jpg?size=626&ext=jpg",
+//     date: new Date(),
+//   },
+//   {
+//     id: "2",
+//     name: "Testi 1",
+//     description: "Paras desc 1",
+//     tags: ["React", "NodeJS"],
+//     gitHubLink: "https://google.com",
+//     // image:
+//     //   "https://img.freepik.com/free-photo/abstract-grunge-decorative-relief-navy-blue-stucco-wall-texture-wide-angle-rough-colored-background_1258-28311.jpg?size=626&ext=jpg",
+//     date: new Date(),
+//   },
+//   {
+//     id: "3",
+//     name: "Testi 1",
+//     description: "Paras desc 1",
+//     tags: ["React", "NodeJS"],
+//     gitHubLink: "https://google.com",
+//     // image:
+//     //   "https://img.freepik.com/free-photo/abstract-grunge-decorative-relief-navy-blue-stucco-wall-texture-wide-angle-rough-colored-background_1258-28311.jpg?size=626&ext=jpg",
+//     date: new Date(),
+//   },
+//   {
+//     id: "4",
+//     name: "Testi 1",
+//     description: "Paras desc 1",
+//     tags: ["React", "NodeJS"],
+//     gitHubLink: "https://google.com",
+//     // image:
+//     //   "https://img.freepik.com/free-photo/abstract-grunge-decorative-relief-navy-blue-stucco-wall-texture-wide-angle-rough-colored-background_1258-28311.jpg?size=626&ext=jpg",
+//     date: new Date(),
+//   },
+// ];
