@@ -1,30 +1,34 @@
-import axios from "axios";
-import config from "../config/config";
-import IImage from "../types/image.type";
-import IProject from "../types/project.type";
-import IWebsite from "../types/website.type";
+import axios from "axios"
+import config from "../config/config"
+import IImage from "../types/image.type"
+import IProject from "../types/project.type"
+import IWebsite from "../types/website.type"
 
-const API_URL = config.WEBSITE_API;
+const API_URL = config.WEBSITE_API
 
 // TODO
 // Must authenticate using JWT
 
 export const getProjects = async () => {
-  return axios.get(API_URL + "/api/website/projects");
-};
+  return axios.get(API_URL + "/api/website/projects")
+}
 
 export const createProject = async (data: FormData, authToken: string) => {
   return axios
-    .post(API_URL + "/api/website/projects", data)
+    .post(API_URL + "/api/website/projects", data, {
+      headers: {
+        Authorization: "bearer " + authToken,
+      },
+    })
     .then((response) => {
-      console.log("response.data", response.data);
+      console.log("response.data", response.data)
 
-      return response.data;
-    });
-};
+      return response.data
+    })
+}
 
 export const editCreatedProject = (data: FormData, authToken: string) => {
-  console.log("formValues", data);
+  console.log("formValues", data)
 
   return axios
     .put(API_URL + "/api/website/projects", data, {
@@ -33,11 +37,11 @@ export const editCreatedProject = (data: FormData, authToken: string) => {
       },
     })
     .then((response) => {
-      console.log("response.data", response.data);
+      console.log("response.data", response.data)
 
-      return response.data;
-    });
-};
+      return response.data
+    })
+}
 
 export const removeProject = async (
   projectToRemove: IProject,
@@ -50,11 +54,11 @@ export const removeProject = async (
       },
     })
     .then((response) => {
-      console.log("response.data", response.data);
+      console.log("response.data", response.data)
 
-      return response.data;
-    });
-};
+      return response.data
+    })
+}
 
 export const removeImage = async (image: IImage, authToken: string) => {
   return axios
@@ -64,8 +68,8 @@ export const removeImage = async (image: IImage, authToken: string) => {
       },
     })
     .then((response) => {
-      console.log("response.data", response.data);
+      console.log("response.data", response.data)
 
-      return response.data;
-    });
-};
+      return response.data
+    })
+}
